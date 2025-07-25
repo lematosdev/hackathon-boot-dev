@@ -6,5 +6,6 @@ const classes = new Hono();
 
 classes.get("/", classesHandler.getAll)
 
+classes.get("/:id", classesHandler.getById)
 
 export default classes
