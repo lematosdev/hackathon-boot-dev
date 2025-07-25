@@ -1,8 +1,10 @@
 {
-  "tasks": {
-    "dev": "deno run --watch main.ts"
-  },
-  "imports": {
-    "@std/assert": "jsr:@std/assert@1"
-  }
+	"tasks": {
+		"server": "deno run --watch --allow-net server/main.ts",
+		"client": ""
+	},
+	"imports": {
+		"@std/assert": "jsr:@std/assert@1"
+	},
+	"unstable": ["fmt-component"]
 }
