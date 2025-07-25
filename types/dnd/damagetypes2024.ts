@@ -1,0 +1,80 @@
+export const damageTypes2024 = {
+  acid: {
+    index: 'acid',
+    name: 'Acid',
+    description: 'Corrosive liquids, digestive enzymes',
+    url: '/api/2024/damage-types/acid',
+  },
+  bludgeoning: {
+    index: 'bludgeoning',
+    name: 'Bludgeoning',
+    description: 'Blunt objects, constriction, falling',
+    url: '/api/2024/damage-types/bludgeoning',
+  },
+  cold: {
+    index: 'cold',
+    name: 'Cold',
+    description: 'Freezing water, icy blasts',
+    url: '/api/2024/damage-types/cold',
+  },
+  fire: {
+    index: 'fire',
+    name: 'Fire',
+    description: 'Flames, unbearable heat',
+    url: '/api/2024/damage-types/fire',
+  },
+  force: {
+    index: 'force',
+    name: 'Force',
+    description: 'Pure magical energy',
+    url: '/api/2024/damage-types/force',
+  },
+  lightning: {
+    index: 'lightning',
+    name: 'Lightning',
+    description: 'Electricity',
+    url: '/api/2024/damage-types/lightning',
+  },
+  necrotic: {
+    index: 'necrotic',
+    name: 'Necrotic',
+    description: 'Life-draining energy',
+    url: '/api/2024/damage-types/necrotic',
+  },
+  piercing: {
+    index: 'piercing',
+    name: 'Piercing',
+    description: 'Fangs, puncturing objects',
+    url: '/api/2024/damage-types/piercing',
+  },
+  poison: {
+    index: 'poison',
+    name: 'Poison',
+    description: 'Toxic gas, venom',
+    url: '/api/2024/damage-types/poison',
+  },
+  psychic: {
+    index: 'psychic',
+    name: 'Psychic',
+    description: 'Mind-rending energy',
+    url: '/api/2024/damage-types/psychic',
+  },
+  radiant: {
+    index: 'radiant',
+    name: 'Radiant',
+    description: 'Holy energy, searing radiation',
+    url: '/api/2024/damage-types/radiant',
+  },
+  slashing: {
+    index: 'slashing',
+    name: 'Slashing',
+    description: 'Claws, cutting objects',
+    url: '/api/2024/damage-types/slashing',
+  },
+  thunder: {
+    index: 'thunder',
+    name: 'Thunder',
+    description: 'Concussive sound',
+    url: '/api/2024/damage-types/thunder',
+  },
+} as const;
