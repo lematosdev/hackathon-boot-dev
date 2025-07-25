@@ -1,0 +1,3 @@
+```bash
+deno task server
+```
