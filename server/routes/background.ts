@@ -1,37 +1,25 @@
-import { Hono } from 'jsr:@hono/hono';
-import { validator } from 'jsr:@hono/hono/validator';
-import backgroundsHandlers from '../handlers/background.ts';
-import dnd from '@types';
+import { VALID_BACKGROUNDS } from '@types';
+import { Hono } from 'hono';
+import z from 'zod';
+import { backgrounds2014 } from '../../types/dnd/backgrounds2014.ts';
+import { zValidator } from '@utils';
 
-const backgrounds = new Hono();
+const schema = z.object({
+  id: z.enum(VALID_BACKGROUNDS),
+});
 
-const backgroundsKeys = Object.keys(dnd.backgrounds2014);
-
-backgrounds.get('/', backgroundsHandlers.getAll);
-
-backgrounds.get(
-  '/:backgroundName',
-  validator('param', (value, c) => {
-    const { backgroundName } = value;
-
-    if (
-      !backgroundName ||
-      typeof backgroundName !== 'string' ||
-      !backgroundsKeys.includes(backgroundName)
-    ) {
-      return c.text(
-        `Background name invalid. Valid backgrounds: ${
-          backgroundsKeys.join(', ')
-        } `,
-        400,
-      );
-    }
-
-    return {
-      backgroundName: backgroundName,
-    };
-  }),
-  backgroundsHandlers.getByBackgroundName,
-);
+const backgrounds = new Hono()
+  .get('/', (c) => c.json(backgrounds2014, 200))
+  .get(
+    '/:id',
+    zValidator(
+      'param',
+      schema,
+    ),
+    (c) => {
+      const { id } = c.req.valid('param');
+      return c.json(backgrounds2014[id], 200);
+    },
+  );
 
 export default backgrounds;

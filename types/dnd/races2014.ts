@@ -1169,4 +1169,3 @@ export const races2014 = {
   },
 } as const;
 
-export const VALID_RACES = Object.keys(races2014) as (keyof typeof races2014)[]
