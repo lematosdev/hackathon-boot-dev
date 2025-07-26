@@ -1,16 +1,16 @@
 import { Context } from "jsr:@hono/hono";
 import dnd from "../../types/dnd/index.ts";
 
-const subclasses2014 = dnd.subclasses2014;
+const subClasses = dnd.subclasses2014;
 
 function getAll(c: Context): Response {
-  return c.json(subclasses2014, 200);
+  return c.json(subClasses, 200);
 }
 
 function getBySubClassName(c: Context): Response {
-  const subClassName = c.req.param("subClassName");
+  const subClassName = c.req.param("subClassName");c
 
-  const subClassItem = subclasses2014[subClassName];
+  const subClassItem = subClasses[subClassName];
 
   return c.json(subClassItem, 200);
 }
@@ -18,7 +18,7 @@ function getBySubClassName(c: Context): Response {
 function getBySubClassByClassName(c: Context): Response {
   const className = c.req.param("className");
 
-  const matches = Object.values(subclasses2014).filter(
+  const matches = Object.values(subClasses).filter(
     (sub) => sub.class.index === className
   );
 
