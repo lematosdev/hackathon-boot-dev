@@ -55,6 +55,11 @@ export const VALID_DAMAGE_TYPES_2024 = Object.keys(damageTypes2024) as (keyof ty
 export const VALID_EQUIPMENT = Object.keys(equipment2014) as (keyof typeof equipment2014)[];
 export const VALID_EQUIPMENT_CATEGORIES = Object.keys(equipmentCategories2014) as (keyof typeof equipmentCategories2014)[];
 export const VALID_FEATS = Object.keys(feats2014) as (keyof typeof feats2014)[];
+export const VALID_FEATURES = Object.keys(features2014) as (keyof typeof features2014)[];
+export const VALID_LANGUAGES_2014 = Object.keys(languages2014) as (keyof typeof languages2014)[];
+export const VALID_LANGUAGES_2024 = Object.keys(languages2024) as (keyof typeof languages2024)[];
+export const VALID_MAGIC_ITEMS = Object.keys(magicItems2014) as (keyof typeof magicItems2014)[];
+export const VALID_PROFICIENCIES = Object.keys(proficiencies2014) as (keyof typeof proficiencies2014)[];
 
 export default {
   abilityScores2014,

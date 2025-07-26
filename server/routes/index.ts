@@ -10,6 +10,10 @@ import alignmentsRoutes from './alignments.ts';
 import conditionsRoutes from './conditions.ts';
 import damagetypesRoutes from './damagetypes.ts';
 import equipmentRoutes from './equipment.ts';
+import featuresRoutes from './features.ts';
+import languagesRoutes from './languages.ts';
+import magicitemsRoutes from './magicitems.ts';
+import proficienciesRoutes from './proficiencies.ts';
 
 const app = new Hono();
 
@@ -24,5 +28,9 @@ app.route('/alignments', alignmentsRoutes);
 app.route('/conditions', conditionsRoutes);
 app.route('/damagetypes', damagetypesRoutes);
 app.route('/equipment', equipmentRoutes);
+app.route('/features', featuresRoutes);
+app.route('/languages', languagesRoutes);
+app.route('/magicitems', magicitemsRoutes);
+app.route('/proficiencies', proficienciesRoutes);
 
 export default app;
