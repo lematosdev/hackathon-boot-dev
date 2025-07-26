@@ -19,22 +19,23 @@ ai.get(
 		const background = value['background'];
 		const level = value['level'];
 
+		const levelNum = parseInt(level, 10);
 		if (
 			validateRace(race) && validateClass(characterClass) &&
 			validateSubrace(subrace) && validateBackground(background) &&
-			Number(level)
+			!isNaN(levelNum) && levelNum > 0 && levelNum <= 20
 		) {
 			return {
 				race,
 				class: characterClass,
 				subrace,
 				background,
-				level: +level,
+				level: levelNum,
 			};
 		} else {
 			return c.json({
 				message: 'Invalid query params',
-			});
+			}, 400);
 		}
 	}),
 	async (c) => {
