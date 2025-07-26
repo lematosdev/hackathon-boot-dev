@@ -1,13 +1,3 @@
-interface Languages2014 {
-  desc?: string;
-  index: string;
-  name: string;
-  script?: string;
-  type: string;
-  typical_speakers: string[];
-  url: string;
-}
-
 export const languages2014 = {
   common: {
     index: 'common',
@@ -144,4 +134,5 @@ export const languages2014 = {
   },
 } as const;
 
-export type { Languages2014 };
+
+export type Languages2014 = keyof typeof languages2014;

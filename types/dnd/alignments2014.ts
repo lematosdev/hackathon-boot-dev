@@ -63,3 +63,5 @@ export const alignments2014 = {
     url: '/api/2014/alignments/chaotic-evil',
   },
 } as const;
+
+export type Alignments2014 = keyof typeof alignments2014;
