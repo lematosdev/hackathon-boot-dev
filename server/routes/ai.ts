@@ -8,10 +8,10 @@ import {
   VALID_RACES,
   VALID_SUBRACES,
 } from '@types';
-import { generateBackstory } from '../services/ai.ts';
+import { generateBackstory, generateCharacterName } from '../services/ai.ts';
 import z from 'zod';
 
-const schema = z.object({
+const backStorySchema = z.object({
   race: z.enum(VALID_RACES),
   class: z.enum(VALID_CLASSES),
   subrace: z.enum(VALID_SUBRACES),
@@ -24,12 +24,37 @@ const schema = z.object({
   ),
 });
 
+const characterNameGeneratorSchema = z.object({
+  race: z.enum(VALID_RACES),
+  gender: z.enum(['male', 'female', 'neutral']).optional(),
+});
+
 const ai = new Hono()
+  .get(
+    '/name-generator',
+    zValidator(
+      'query',
+      characterNameGeneratorSchema,
+    ),
+    async (c) => {
+      const { race, gender } = c.req.valid('query');
+      try {
+        const result = await generateCharacterName({ race, gender });
+        const parsedResult = JSON.parse(result);
+        return c.json(parsedResult, 200);
+      } catch (error) {
+        return c.json({
+          message: 'Failed to generate character name',
+          error: error.message,
+        });
+      }
+    },
+  )
   .post(
     '/backstory',
     zValidator(
       'json',
-      schema,
+      backStorySchema,
     ),
     async (c) => {
       const json = c.req.valid('json');

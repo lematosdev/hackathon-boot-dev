@@ -1,4 +1,4 @@
-import { Hono } from 'jsr:@hono/hono';
+import { Hono } from 'hono';
 import { zValidator } from '@utils';
 import z from 'zod';
 import { races2014 } from '../../types/dnd/races2014.ts';
