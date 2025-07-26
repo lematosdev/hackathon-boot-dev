@@ -4697,3 +4697,5 @@ export const classes2014 = {
     url: '/api/2014/classes/wizard',
   },
 } as const;
+
+export const VALID_CLASSES = Object.keys(classes2014) as (keyof typeof classes2014)[]
