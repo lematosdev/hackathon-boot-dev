@@ -1,5 +1,6 @@
 import { GoogleGenAI } from 'npm:@google/genai';
 import dnd, {
+  AbilitiesType,
   BackgroundTypes,
   ClassesType,
   RacesType,
@@ -15,7 +16,7 @@ export async function generateBackstory(character: {
   class: ClassesType;
   background: BackgroundTypes;
   subrace: SubracesType;
-  stats: Record<string, number>;
+  stats: Record<AbilitiesType, number>;
   level: number;
 }) {
   const raceData = dnd.races2014[character.race];
@@ -29,6 +30,14 @@ export async function generateBackstory(character: {
 
   const systemInstruction =
     'Eres un experto en D&D 5e que responde basándose únicamente en los datos proporcionados.';
+
+  const schema = {
+    backstory: 'string',
+    personalityTraits: 'string',
+    ideals: 'string',
+    bonds: 'string',
+    flaws: 'string',
+  };
 
   const prompt = `
     Genera una backstory completa para este personaje de D&D 5e:
@@ -57,7 +66,9 @@ export async function generateBackstory(character: {
 
     ESTADÍSTICAS:
     ${
-    Object.entries(character.stats).map(([stat, value]) => `${stat}: ${value}`)
+    Object.entries(character.stats || {}).map(([stat, value]) =>
+      `${stat}: ${value}`
+    )
       .join(', ')
   }
 
@@ -75,8 +86,11 @@ export async function generateBackstory(character: {
 
     3. Sugiere rasgos de personalidad específicos basados en la combinación raza/clase/trasfondo
 
-    Responde en el formato JSON especificado. 
+    Responde ÚNICAMENTE en formato JSON válido
+
+    Sigue este esquema: ${JSON.stringify(schema)}
     `;
+
   const response = await ai.models.generateContent({
     model: 'gemini-2.0-flash-001',
     contents: [prompt],
