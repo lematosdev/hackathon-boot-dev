@@ -4698,4 +4698,5 @@ export const classes2014 = {
   },
 } as const;
 
+export type Classes2014 = keyof typeof classes2014;
 export const VALID_CLASSES = Object.keys(classes2014) as (keyof typeof classes2014)[]

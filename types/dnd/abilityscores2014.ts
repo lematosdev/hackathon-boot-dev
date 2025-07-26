@@ -161,3 +161,5 @@ export const abilityScores2014 = {
     url: '/api/2014/ability-scores/cha',
   },
 } as const;
+
+export type AbilityScores2014 = keyof typeof abilityScores2014;
