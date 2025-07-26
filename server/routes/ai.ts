@@ -12,10 +12,10 @@ import { generateBackstory } from '../services/ai.ts';
 import z from 'zod';
 
 const schema = z.object({
-  race: z.literal(VALID_RACES),
-  class: z.literal(VALID_CLASSES),
-  subrace: z.literal(VALID_SUBRACES),
-  background: z.literal(VALID_BACKGROUNDS),
+  race: z.enum(VALID_RACES),
+  class: z.enum(VALID_CLASSES),
+  subrace: z.enum(VALID_SUBRACES),
+  background: z.enum(VALID_BACKGROUNDS),
   level: z.number().min(1).max(20),
   stats: z.object(
     Object.fromEntries(

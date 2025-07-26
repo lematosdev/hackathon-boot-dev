@@ -5,7 +5,7 @@ import { backgrounds2014 } from '../../types/dnd/backgrounds2014.ts';
 import { zValidator } from '@utils';
 
 const schema = z.object({
-  id: z.literal(VALID_BACKGROUNDS),
+  id: z.enum(VALID_BACKGROUNDS),
 });
 
 const backgrounds = new Hono()
