@@ -17,6 +17,6 @@ app.route('/races', racesRoutes);
 app.route('/subraces', subracesRoutes);
 app.route('/ai', aiRoutes);
 app.route('/abilityscores', abilityscoresRoutes);
-app.route('/aligntments', alignmentsRoutes);
+app.route('/alignments', alignmentsRoutes);
 
 export default app;
