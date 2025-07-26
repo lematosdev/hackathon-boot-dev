@@ -13,7 +13,6 @@ app.route('/subclasses', subclassesRoutes);
 app.route('/backgrounds', backgroundsRoutes);
 app.route('/races', racesRoutes);
 app.route('/subraces', subracesRoutes);
-app.route('/classes', classesRoutes);
 app.route('/ai', aiRoutes);
 
 export default app;
