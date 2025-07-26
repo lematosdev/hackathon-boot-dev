@@ -1,14 +1,21 @@
 import { Context } from "jsr:@hono/hono";
+import dnd from "../../types/dnd/index.ts";
 
-function getAll(c: Context) {
-    return c.json([{ culo: "tetas" }])
+const classes = dnd.classes2014;
+
+function getAll(c: Context): Response {
+  return c.json(classes);
 }
 
-function getById(c: Context, id: string) {
-    return c.json({})
+function getByClassName(c: Context): Response {
+  const className = c.req.param("className");
+
+  const classItem = classes[className];
+
+  return c.json(classItem);
 }
 
 export default {
-    getAll,
-    getById
-}
+  getAll,
+  getByClassName,
+};
