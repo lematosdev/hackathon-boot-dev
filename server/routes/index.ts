@@ -14,6 +14,9 @@ import featuresRoutes from './features.ts';
 import languagesRoutes from './languages.ts';
 import magicitemsRoutes from './magicitems.ts';
 import proficienciesRoutes from './proficiencies.ts';
+import skillsRoutes from './skills.ts';
+import spellsRoutes from './spells.ts';
+import traitsRoutes from './traits.ts';
 
 const app = new Hono();
 
@@ -32,5 +35,8 @@ app.route('/features', featuresRoutes);
 app.route('/languages', languagesRoutes);
 app.route('/magicitems', magicitemsRoutes);
 app.route('/proficiencies', proficienciesRoutes);
+app.route('/skills', skillsRoutes);
+app.route('/spells', spellsRoutes);
+app.route('/traits', traitsRoutes);
 
 export default app;

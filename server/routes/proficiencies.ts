@@ -4,7 +4,7 @@ import z from 'zod';
 import { proficiencies2014 } from '../../types/dnd/proficiencies2014.ts';
 import { VALID_CLASSES, VALID_PROFICIENCIES } from '@types';
 
-const features = new Hono();
+const proficiencies = new Hono();
 
 const schemaProficiency = z.object({
   proficiency: z.enum(VALID_PROFICIENCIES),
@@ -14,7 +14,7 @@ const schemaClass = z.object({
   className: z.enum(VALID_CLASSES),
 });
 
-features
+proficiencies
   .get('/', (c) => c.json(proficiencies2014, 200))
   .get(
     '/:proficiency',
@@ -42,4 +42,4 @@ features
     },
   );
 
-export default features;
+export default proficiencies;

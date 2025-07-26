@@ -4,7 +4,7 @@ import z from 'zod';
 import { magicItems2014 } from '../../types/dnd/magicitems2014.ts';
 import { VALID_EQUIPMENT_CATEGORIES, VALID_MAGIC_ITEMS } from '@types';
 
-const features = new Hono();
+const magicitems = new Hono();
 
 const schemaMagicItems = z.object({
   magicItemName: z.enum(VALID_MAGIC_ITEMS),
@@ -14,7 +14,7 @@ const schemaCategory = z.object({
   equipmentCategory: z.enum(VALID_EQUIPMENT_CATEGORIES),
 });
 
-features
+magicitems
   .get('/', (c) => c.json(magicItems2014, 200))
   .get(
     '/:magicItemName',
@@ -40,4 +40,4 @@ features
     },
   );
 
-export default features;
+export default magicitems;

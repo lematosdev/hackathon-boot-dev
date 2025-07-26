@@ -44,6 +44,7 @@ export const VALID_RACES = Object.keys(races2014) as (keyof typeof races2014)[];
 export const VALID_SUBRACES = Object.keys(subraces2014) as (keyof typeof subraces2014)[];
 export const VALID_BACKGROUNDS = Object.keys(backgrounds2014) as (keyof typeof backgrounds2014)[];
 export const VALID_CLASSES = Object.keys(classes2014) as (keyof typeof classes2014)[];
+export const VALID_SUBCLASSES = Object.keys(subclasses2014) as (keyof typeof subclasses2014)[];
 export const VALID_ABILITIES_2024 = Object.keys(abilityScores2024) as (keyof typeof abilityScores2024)[];
 export const VALID_ABILITIES_2014 = Object.keys(abilityScores2014) as (keyof typeof abilityScores2014)[];
 export const VALID_ALIGNMENTS_2014 = Object.keys(alignments2014) as (keyof typeof alignments2014)[];
@@ -60,6 +61,13 @@ export const VALID_LANGUAGES_2014 = Object.keys(languages2014) as (keyof typeof 
 export const VALID_LANGUAGES_2024 = Object.keys(languages2024) as (keyof typeof languages2024)[];
 export const VALID_MAGIC_ITEMS = Object.keys(magicItems2014) as (keyof typeof magicItems2014)[];
 export const VALID_PROFICIENCIES = Object.keys(proficiencies2014) as (keyof typeof proficiencies2014)[];
+export const VALID_SKILLS_2014 = Object.keys(skills2014) as (keyof typeof skills2014)[];
+export const VALID_SKILLS_2024 = Object.keys(skills2024) as (keyof typeof skills2024)[];
+export const VALID_SPELLS = Object.keys(spells2014) as (keyof typeof spells2014)[];
+export const VALID_TRAITS = Object.keys(traits2014) as (keyof typeof traits2014)[];
+export const VALID_WEAPON_MASTERY_PROPERTIES = Object.keys(weaponMasteryProperties2024) as (keyof typeof weaponMasteryProperties2024)[];
+export const VALID_WEAPON_PROPERTIES_2014 = Object.keys(weaponProperties2014) as (keyof typeof weaponProperties2014)[];
+export const VALID_WEAPON_PROPERTIES_2024 = Object.keys(weaponProperties2024) as (keyof typeof weaponProperties2024)[];
 
 export default {
   abilityScores2014,
