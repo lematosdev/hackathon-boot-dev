@@ -37,9 +37,9 @@ damageTypes
     (c) => {
       const { damageTypeName } = c.req.valid('param');
 
-      const conditionItem = damageTypes2024[damageTypeName];
+      const damageTypeItem = damageTypes2024[damageTypeName];
 
-      return c.json(conditionItem, 200);
+      return c.json(damageTypeItem, 200);
     },
   );
 
