@@ -46,26 +46,6 @@ interface Races2014Ability_bonus_options {
   type: string;
 }
 
-interface Races2014 {
-  ability_bonus_options?: Races2014Ability_bonus_options;
-  ability_bonuses: Races2014Ability_bonuses[];
-  age: string;
-  alignment: string;
-  index: string;
-  language_desc: string;
-  language_options?: Races2014Language_options;
-  languages: Races2014Languages[];
-  name: string;
-  size: string;
-  size_description: string;
-  speed: number;
-  starting_proficiencies: Races2014Starting_proficiencies[] | any[];
-  starting_proficiency_options?: Races2014Starting_proficiency_options;
-  subraces: Races2014Subraces[] | any[];
-  traits: Races2014Traits[] | any[];
-  url: string;
-}
-
 export const races2014 = {
   dwarf: {
     index: 'dwarf',
@@ -1169,3 +1149,5 @@ export const races2014 = {
   },
 } as const;
 
+export type Races2014 = keyof typeof races2014;
+export const VALID_RACES = Object.keys(races2014) as (keyof typeof races2014)[]
