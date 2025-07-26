@@ -283,3 +283,6 @@ export const subraces2014 = {
     url: '/api/2014/subraces/rock-gnome',
   },
 } as const;
+
+
+export const VALID_SUBRACES = Object.keys(subraces2014) as (keyof typeof subraces2014)[]

@@ -351,3 +351,7 @@ export const backgrounds2014 = {
     url: '/api/2014/backgrounds/acolyte',
   },
 } as const;
+
+
+export const VALID_BACKGROUNDS = Object.keys(backgrounds2014) as (keyof typeof backgrounds2014)[]
+

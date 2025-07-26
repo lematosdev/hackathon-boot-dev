@@ -1,10 +1,27 @@
 {
 	"tasks": {
-		"server": "deno run --watch --allow-net server/main.ts",
+		"server": "deno run --watch --allow-net --allow-env --allow-read server/main.ts",
 		"client": ""
 	},
 	"imports": {
-		"@std/assert": "jsr:@std/assert@1"
+		"@std/assert": "jsr:@std/assert@1",
+		"@types": "./types/dnd/index.ts"
+	},
+	"lint": {
+		"include": ["server/", "client/src/"],
+		"rules": {
+			"tags": ["recommended"],
+			"include": ["ban-untagged-todo"]
+		}
+	},
+	"fmt": {
+		"useTabs": true,
+		"lineWidth": 80,
+		"indentWidth": 4,
+		"semiColons": true,
+		"singleQuote": true,
+		"proseWrap": "preserve",
+		"include": ["server/", "client/src/"]
 	},
 	"unstable": ["fmt-component"]
 }
