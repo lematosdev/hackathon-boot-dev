@@ -42,16 +42,27 @@ ai.get(
 		const { race, class: characterClass, subrace, background, level } = c
 			.req.valid('query');
 
-		const result = await generateBackstory({
-			race,
-			subrace,
-			class: characterClass,
-			background,
-			level: +level,
-			stats: {},
-		});
+		try {
+			const result = await generateBackstory({
+				race,
+				subrace,
+				class: characterClass,
+				background,
+				level,
+				stats: {},
+			});
 
-		return c.json(JSON.parse(result));
+			const parsedResult = JSON.parse(result);
+			return c.json(parsedResult);
+		} catch (error) {
+			return c.json(
+				{
+					message: 'Failed to generate backstory',
+					error: error.message,
+				},
+				500,
+			);
+		}
 	},
 );
 
