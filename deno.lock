@@ -2,14 +2,25 @@
   "version": "5",
   "specifiers": {
     "jsr:@hono/hono@*": "4.8.8",
+    "jsr:@hono/hono@^4.8.3": "4.8.8",
+    "jsr:@hono/zod-validator@*": "0.7.2",
     "jsr:@std/dotenv@*": "0.225.5",
     "npm:@google/genai@*": "1.11.0",
     "npm:@types/node@*": "22.15.15",
-    "npm:g@*": "2.0.1"
+    "npm:g@*": "2.0.1",
+    "npm:zod@4": "4.0.10",
+    "npm:zod@^4.0.5": "4.0.10"
   },
   "jsr": {
     "@hono/hono@4.8.8": {
       "integrity": "cefb58c26a558dbde289c6fe83e49a4ed0b887d6c0db76fe08f4211d8e26082c"
+    },
+    "@hono/zod-validator@0.7.2": {
+      "integrity": "2c055aabbd9e349b32bd0761bed1efd31b5b47f2cb42cd6eef91186b6d5cf4e1",
+      "dependencies": [
+        "jsr:@hono/hono@^4.8.3",
+        "npm:zod@^4.0.5"
+      ]
     },
     "@std/dotenv@0.225.5": {
       "integrity": "9ce6f9d0ec3311f74a32535aa1b8c62ed88b1ab91b7f0815797d77a6f60c922f"
@@ -163,11 +174,17 @@
     },
     "ws@8.18.3": {
       "integrity": "sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg=="
+    },
+    "zod@4.0.10": {
+      "integrity": "sha512-3vB+UU3/VmLL2lvwcY/4RV2i9z/YU0DTV/tDuYjrwmx5WeJ7hwy+rGEEx8glHp6Yxw7ibRbKSaIFBgReRPe5KA=="
     }
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@1"
+      "jsr:@hono/hono@*",
+      "jsr:@hono/zod-validator@*",
+      "jsr:@std/assert@1",
+      "npm:zod@4"
     ]
   }
 }

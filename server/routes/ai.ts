@@ -1,69 +1,53 @@
-import { Hono } from 'jsr:@hono/hono';
-import { validator } from 'jsr:@hono/hono/validator';
+import { Hono } from 'hono';
+import { zValidator } from '@utils';
 import {
-  validateBackground,
-  validateClass,
-  validateRace,
-  validateSubrace,
+  AbilitiesType,
+  VALID_ABILITIES,
+  VALID_BACKGROUNDS,
+  VALID_CLASSES,
+  VALID_RACES,
+  VALID_SUBRACES,
 } from '@types';
 import { generateBackstory } from '../services/ai.ts';
+import z from 'zod';
 
-const ai = new Hono();
+const schema = z.object({
+  race: z.enum(VALID_RACES),
+  class: z.enum(VALID_CLASSES),
+  subrace: z.enum(VALID_SUBRACES),
+  background: z.enum(VALID_BACKGROUNDS),
+  level: z.number().min(1).max(20),
+  stats: z.object(
+    Object.fromEntries(
+      VALID_ABILITIES.map((ability) => [ability, z.number()]),
+    ) as Record<AbilitiesType, z.ZodNumber>,
+  ),
+});
 
-ai.get(
-  '/backstory',
-  validator('query', (value, c) => {
-    const race = value['race'];
-    const characterClass = value['class'];
-    const subrace = value['subrace'];
-    const background = value['background'];
-    const level = value['level'];
+const ai = new Hono()
+  .post(
+    '/backstory',
+    zValidator(
+      'json',
+      schema,
+    ),
+    async (c) => {
+      const json = c.req.valid('json');
 
-    const levelNum = parseInt(level as string, 10);
-    if (
-      validateRace(race) && validateClass(characterClass) &&
-      validateSubrace(subrace) && validateBackground(background) &&
-      !isNaN(levelNum) && levelNum > 0 && levelNum <= 20
-    ) {
-      return {
-        race,
-        class: characterClass,
-        subrace,
-        background,
-        level: levelNum,
-      };
-    } else {
-      return c.json({
-        message: 'Invalid query params',
-      }, 400);
-    }
-  }),
-  async (c) => {
-    const { race, class: characterClass, subrace, background, level } = c
-      .req.valid('query');
-
-    try {
-      const result = await generateBackstory({
-        race,
-        subrace,
-        class: characterClass,
-        background,
-        level,
-        stats: {},
-      });
-
-      const parsedResult = JSON.parse(result);
-      return c.json(parsedResult);
-    } catch (error) {
-      return c.json(
-        {
-          message: 'Failed to generate backstory',
-          error: error.message,
-        },
-        500,
-      );
-    }
-  },
-);
+      try {
+        const result = await generateBackstory(json);
+        const parsedResult = JSON.parse(result);
+        return c.json(parsedResult, 200);
+      } catch (error) {
+        return c.json(
+          {
+            message: 'Failed to generate backstory',
+            error: error.message,
+          },
+          500,
+        );
+      }
+    },
+  );
 
 export default ai;
