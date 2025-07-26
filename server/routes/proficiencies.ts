@@ -33,9 +33,11 @@ features
     (c) => {
       const { className } = c.req.valid('param');
 
-      const featureItem = Object.values(proficiencies2014).filter(
-        (f) => className in f.classes,
-      );
+      const featureItem = Object.values(proficiencies2014)
+        .filter((f) => {
+          const indexes = f.classes.map((cls) => cls.index);
+          return indexes.includes(className);
+        });
       return c.json(featureItem, 200);
     },
   );
