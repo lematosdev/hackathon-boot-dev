@@ -10,26 +10,26 @@ const racesKeys = Object.keys(dnd.races2014);
 races.get('/', racesHandler.getAll);
 
 races.get(
-	'/:raceName',
-	validator('param', (value, c) => {
-		const { raceName } = value;
+  '/:raceName',
+  validator('param', (value, c) => {
+    const { raceName } = value;
 
-		if (
-			!raceName ||
-			typeof raceName !== 'string' ||
-			!racesKeys.includes(raceName)
-		) {
-			return c.text(
-				`Race name invalid. Valid races: ${racesKeys.join(', ')} `,
-				400,
-			);
-		}
+    if (
+      !raceName ||
+      typeof raceName !== 'string' ||
+      !racesKeys.includes(raceName)
+    ) {
+      return c.text(
+        `Race name invalid. Valid races: ${racesKeys.join(', ')} `,
+        400,
+      );
+    }
 
-		return {
-			raceName: raceName,
-		};
-	}),
-	racesHandler.getByRaceName,
+    return {
+      raceName: raceName,
+    };
+  }),
+  racesHandler.getByRaceName,
 );
 
 export default races;

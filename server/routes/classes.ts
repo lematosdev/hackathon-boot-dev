@@ -10,26 +10,26 @@ const classesKeys = Object.keys(dnd.classes2014);
 classes.get('/', classesHandler.getAll);
 
 classes.get(
-	'/:className',
-	validator('param', (value, c) => {
-		const { className } = value;
+  '/:className',
+  validator('param', (value, c) => {
+    const { className } = value;
 
-		if (
-			!className ||
-			typeof className !== 'string' ||
-			!classesKeys.includes(className)
-		) {
-			return c.text(
-				`Class name invalid. Valid classes: ${classesKeys.join(', ')} `,
-				400,
-			);
-		}
+    if (
+      !className ||
+      typeof className !== 'string' ||
+      !classesKeys.includes(className)
+    ) {
+      return c.text(
+        `Class name invalid. Valid classes: ${classesKeys.join(', ')} `,
+        400,
+      );
+    }
 
-		return {
-			className: className,
-		};
-	}),
-	classesHandler.getByClassName,
+    return {
+      className: className,
+    };
+  }),
+  classesHandler.getByClassName,
 );
 
 export default classes;

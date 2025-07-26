@@ -16,7 +16,7 @@ import { languages2014 } from './languages2014.ts';
 import { languages2024 } from './languages2024.ts';
 import { levels2014 } from './levels2014.ts';
 import { magicItems2014 } from './magicitems2014.ts';
-import { magicSchools2014 } from './magicschools2014.ts';
+import { magicSchools2014 } from './magicschools2014.ts'
 import { magicSchools2024 } from './magicschools2024.ts';
 import { monsters2014 } from './monsters2014.ts';
 import { proficiencies2014 } from './proficiencies2014.ts';
@@ -25,7 +25,7 @@ import { rules2014 } from './rules2014.ts';
 import { ruleSections2014 } from './rulesections2014.ts';
 import { skills2014 } from './skills2014.ts';
 import { skills2024 } from './skills2024.ts';
-import { spells2014 } from './spells2014.ts';
+import { spells2014 } from './spells2014.ts'
 import { subclasses2014 } from './subclasses2014.ts';
 import { subraces2014, VALID_SUBRACES } from './subraces2014.ts';
 import { traits2014 } from './traits2014.ts';
@@ -39,6 +39,7 @@ function createValidator<T extends Record<string, unknown>>(dataSource: T) {
     return typeof query === "string" && query in dataSource;
   };
 }
+
 export const validateRace = createValidator(races2014);
 export const validateClass = createValidator(classes2014);
 export const validateSubrace = createValidator(subraces2014);
