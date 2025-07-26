@@ -208,3 +208,5 @@ export const skills2024 = {
     url: '/api/2024/skills/survival',
   },
 } as const;
+
+export type Skills2024 = keyof typeof skills2024;
