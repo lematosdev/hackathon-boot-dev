@@ -46,7 +46,7 @@ const ai = new Hono()
         return c.json({
           message: 'Failed to generate character name',
           error: error.message,
-        });
+        }, 500);
       }
     },
   )
