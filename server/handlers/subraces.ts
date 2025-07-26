@@ -8,7 +8,7 @@ function getAll(c: Context): Response {
 }
 
 function getBySubRaceName(c: Context): Response {
-  const subRaceName = c.req.param("subRaceName");c
+  const subRaceName = c.req.param("subRaceName");
 
   const subRaceItem = subRaces[subRaceName];
 
