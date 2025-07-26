@@ -2039,3 +2039,5 @@ export const proficiencies2014 = {
     },
   },
 } as const;
+
+export type Proficiencies2014 = keyof typeof proficiencies2014;
