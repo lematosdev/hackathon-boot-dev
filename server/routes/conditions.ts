@@ -1,86 +1,46 @@
 import { Hono } from 'jsr:@hono/hono';
-import { validator } from 'jsr:@hono/hono/validator';
-import dnd from '@types';
+import { zValidator } from '@utils';
+import z from 'zod';
+import { conditions2014 } from '../../types/dnd/conditions2014.ts';
+import { conditions2024 } from '../../types/dnd/conditions2024.ts';
+import { VALID_CONDITIONS_2014, VALID_CONDITIONS_2024 } from '@types';
 
 const conditions = new Hono();
 
-const conditions2014 = dnd.conditions2014;
-const conditions2024 = dnd.conditions2024;
+const schema2014 = z.object({
+  conditionName: z.enum(VALID_CONDITIONS_2014),
+});
 
-conditions.get(
-  '/2014/',
-  (c) => {
-    return c.json(conditions2014, 200);
-  },
-);
+const schema2024 = z.object({
+  conditionName: z.enum(VALID_CONDITIONS_2024),
+});
 
-conditions.get(
-  '/2024/',
-  (c) => {
-    return c.json(conditions2024, 200);
-  },
-);
+conditions
+  .get('/2014/', (c) => c.json(conditions2014, 200))
+  .get(
+    '/2014/:conditionName',
+    zValidator('param', schema2014),
+    (c) => {
+      const { conditionName } = c.req.valid('param');
 
-conditions.get(
-  '/2014/:conditionName',
-  validator('param', (value, c) => {
-    const { conditionName } = value;
+      const conditionItem = conditions2014[conditionName];
 
-    if (
-      !conditionName ||
-      typeof conditionName !== 'string' ||
-      !(conditionName in conditions2014)
-    ) {
-      return c.text(
-        `Ability name invalid. Valid abilities: ${
-          Object.keys(conditions2014).join(', ')
-        } `,
-        400,
-      );
-    }
+      return c.json(conditionItem, 200);
+    },
+  );
 
-    return { conditionName };
-  }),
-  (c) => {
-    const { conditionName } = c.req.valid('param') as {
-      conditionName: keyof typeof conditions2014;
-    };
+conditions
+  .get('/2024/', (c) => c.json(conditions2024, 200))
+  .get(
+    '/2024/:conditionName',
+    zValidator('param', schema2024),
+    (c) => {
+      const { conditionName } = c.req.valid('param');
 
-    const alignmentItem = conditions2014[conditionName];
+      const conditionItem = conditions2024[conditionName];
 
-    return c.json(alignmentItem, 200);
-  },
-);
+      return c.json(conditionItem, 200);
+    },
+  );
 
-conditions.get(
-  '/2024/:alignmentName',
-  validator('param', (value, c) => {
-    const { alignmentName } = value;
-
-    if (
-      !alignmentName ||
-      typeof alignmentName !== 'string' ||
-      !(alignmentName in alignments2024)
-    ) {
-      return c.text(
-        `Ability name invalid. Valid abilities: ${
-          Object.keys(alignments2024).join(', ')
-        } `,
-        400,
-      );
-    }
-
-    return { alignmentName };
-  }),
-  (c) => {
-    const { alignmentName } = c.req.valid('param') as {
-      alignmentName: keyof typeof alignments2024;
-    };
-
-    const alignmentItem = alignmentName[alignmentName];
-
-    return c.json(alignmentItem, 200);
-  },
-);
-
-export default alignmentsRoutes;
+export default conditions;

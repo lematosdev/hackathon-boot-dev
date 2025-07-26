@@ -44,8 +44,17 @@ export const VALID_RACES = Object.keys(races2014) as (keyof typeof races2014)[];
 export const VALID_SUBRACES = Object.keys(subraces2014) as (keyof typeof subraces2014)[];
 export const VALID_BACKGROUNDS = Object.keys(backgrounds2014) as (keyof typeof backgrounds2014)[];
 export const VALID_CLASSES = Object.keys(classes2014) as (keyof typeof classes2014)[];
-export const VALID_ABILITIES = Object.keys(abilityScores2024) as (keyof typeof abilityScores2024)[];
-
+export const VALID_ABILITIES_2024 = Object.keys(abilityScores2024) as (keyof typeof abilityScores2024)[];
+export const VALID_ABILITIES_2014 = Object.keys(abilityScores2014) as (keyof typeof abilityScores2014)[];
+export const VALID_ALIGNMENTS_2014 = Object.keys(alignments2014) as (keyof typeof alignments2014)[];
+export const VALID_ALIGNMENTS_2024 = Object.keys(alignments2024) as (keyof typeof alignments2024)[];
+export const VALID_CONDITIONS_2014 = Object.keys(conditions2014) as (keyof typeof conditions2014)[];
+export const VALID_CONDITIONS_2024 = Object.keys(conditions2024) as (keyof typeof conditions2024)[];
+export const VALID_DAMAGE_TYPES_2014 = Object.keys(damageTypes2014) as (keyof typeof damageTypes2014)[];
+export const VALID_DAMAGE_TYPES_2024 = Object.keys(damageTypes2024) as (keyof typeof damageTypes2024)[];
+export const VALID_EQUIPMENT = Object.keys(equipment2014) as (keyof typeof equipment2014)[];
+export const VALID_EQUIPMENT_CATEGORIES = Object.keys(equipmentCategories2014) as (keyof typeof equipmentCategories2014)[];
+export const VALID_FEATS = Object.keys(feats2014) as (keyof typeof feats2014)[];
 
 export default {
   abilityScores2014,

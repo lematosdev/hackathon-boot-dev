@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@utils';
 import {
   AbilitiesType,
-  VALID_ABILITIES,
+  VALID_ABILITIES_2014,
   VALID_BACKGROUNDS,
   VALID_CLASSES,
   VALID_RACES,
@@ -19,7 +19,7 @@ const schema = z.object({
   level: z.number().min(1).max(20),
   stats: z.object(
     Object.fromEntries(
-      VALID_ABILITIES.map((ability) => [ability, z.number()]),
+      VALID_ABILITIES_2014.map((ability) => [ability, z.number()]),
     ) as Record<AbilitiesType, z.ZodNumber>,
   ),
 });

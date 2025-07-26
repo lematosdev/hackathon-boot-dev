@@ -7,6 +7,9 @@ import subracesRoutes from './subraces.ts';
 import aiRoutes from './ai.ts';
 import abilityscoresRoutes from './abilityscores.ts';
 import alignmentsRoutes from './alignments.ts';
+import conditionsRoutes from './conditions.ts';
+import damagetypesRoutes from './damagetypes.ts';
+import equipmentRoutes from './equipment.ts';
 
 const app = new Hono();
 
@@ -18,5 +21,8 @@ app.route('/subraces', subracesRoutes);
 app.route('/ai', aiRoutes);
 app.route('/abilityscores', abilityscoresRoutes);
 app.route('/alignments', alignmentsRoutes);
+app.route('/conditions', conditionsRoutes);
+app.route('/damagetypes', damagetypesRoutes);
+app.route('/equipment', equipmentRoutes);
 
 export default app;
