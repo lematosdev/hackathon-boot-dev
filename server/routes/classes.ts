@@ -1,35 +1,27 @@
 import { Hono } from 'jsr:@hono/hono';
-import { validator } from 'jsr:@hono/hono/validator';
-import classesHandler from '../handlers/classes.ts';
-import dnd from '@types';
+import { zValidator } from '@utils';
+import { classes2014 } from '../../types/dnd/classes2014.ts';
+import { VALID_CLASSES } from '@types';
+import z from 'zod';
 
 const classes = new Hono();
 
-const classesKeys = Object.keys(dnd.classes2014);
+const schema = z.object({
+  className: z.enum(VALID_CLASSES),
+});
 
-classes.get('/', classesHandler.getAll);
+classes
+  .get('/', (c) => c.json(classes2014))
+  .get(
+    '/:className',
+    zValidator('param', schema),
+    (c) => {
+      const { className } = c.req.valid('param');
 
-classes.get(
-  '/:className',
-  validator('param', (value, c) => {
-    const { className } = value;
+      const classItem = classes2014[className];
 
-    if (
-      !className ||
-      typeof className !== 'string' ||
-      !classesKeys.includes(className)
-    ) {
-      return c.text(
-        `Class name invalid. Valid classes: ${classesKeys.join(', ')} `,
-        400,
-      );
-    }
-
-    return {
-      className: className,
-    };
-  }),
-  classesHandler.getByClassName,
-);
+      return c.json(classItem, 200);
+    },
+  );
 
 export default classes;

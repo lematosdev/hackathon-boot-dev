@@ -17,6 +17,8 @@ import proficienciesRoutes from './proficiencies.ts';
 import skillsRoutes from './skills.ts';
 import spellsRoutes from './spells.ts';
 import traitsRoutes from './traits.ts';
+import weaponmasterypropertiesRoutes from './weaponmasteryproperties.ts';
+import weaponpropertiesRoutes from './weaponproperties.ts';
 
 const app = new Hono();
 
@@ -38,5 +40,7 @@ app.route('/proficiencies', proficienciesRoutes);
 app.route('/skills', skillsRoutes);
 app.route('/spells', spellsRoutes);
 app.route('/traits', traitsRoutes);
+app.route('/weaponmasteryproperties', weaponmasterypropertiesRoutes);
+app.route('/weaponproperties', weaponpropertiesRoutes);
 
 export default app;

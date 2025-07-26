@@ -1,35 +1,26 @@
 import { Hono } from 'jsr:@hono/hono';
-import { validator } from 'jsr:@hono/hono/validator';
-import racesHandler from '../handlers/races.ts';
-import dnd from '../../types/dnd/index.ts';
+import { zValidator } from '@utils';
+import z from 'zod';
+import { races2014 } from '../../types/dnd/races2014.ts';
+import { VALID_RACES } from '../../types/dnd/races2014.ts';
 
 const races = new Hono();
 
-const racesKeys = Object.keys(dnd.races2014);
+const schema = z.object({
+  raceName: z.enum(VALID_RACES),
+});
 
-races.get('/', racesHandler.getAll);
+races.get('/', (c) => c.json(races2014))
+  .get(
+    '/:raceName',
+    zValidator('param', schema),
+    (c) => {
+      const { raceName } = c.req.valid('param');
 
-races.get(
-  '/:raceName',
-  validator('param', (value, c) => {
-    const { raceName } = value;
+      const raceItem = races2014[raceName];
 
-    if (
-      !raceName ||
-      typeof raceName !== 'string' ||
-      !racesKeys.includes(raceName)
-    ) {
-      return c.text(
-        `Race name invalid. Valid races: ${racesKeys.join(', ')} `,
-        400,
-      );
-    }
-
-    return {
-      raceName: raceName,
-    };
-  }),
-  racesHandler.getByRaceName,
-);
+      return c.json(raceItem, 200);
+    },
+  );
 
 export default races;

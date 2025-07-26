@@ -1,60 +1,43 @@
 import { Hono } from 'jsr:@hono/hono';
-import { validator } from 'jsr:@hono/hono/validator';
-import subracesHandler from '../handlers/subraces.ts';
-import dnd from '@types';
+import { zValidator } from '@utils';
+import z from 'zod';
+import { subraces2014 } from '../../types/dnd/subraces2014.ts';
+import { VALID_RACES, VALID_SUBRACES } from '@types';
 
 const subRaces = new Hono();
 
-const subRacesKeys = Object.keys(dnd.subraces2014);
+const schemaRaces = z.object({
+  raceName: z.enum(VALID_RACES),
+});
 
-const racesKeys = Object.keys(dnd.races2014);
+const schemaSubRaces = z.object({
+  subRaceName: z.enum(VALID_SUBRACES),
+});
 
-subRaces.get('/', subracesHandler.getAll);
+subRaces.get('/', (c) => c.json(subraces2014))
+  .get(
+    '/:subRaceName',
+    zValidator('param', schemaSubRaces),
+    (c) => {
+      const { subRaceName } = c.req.valid('param');
 
-subRaces.get(
-  '/:subRaceName',
-  validator('param', (value, c) => {
-    const { subRaceName } = value;
+      const subRaceItem = subraces2014[subRaceName];
 
-    if (
-      !subRaceName ||
-      typeof subRaceName !== 'string' ||
-      !subRacesKeys.includes(subRaceName)
-    ) {
-      return c.text(
-        `Subclass name invalid. Valid subclasses: ${subRacesKeys.join(', ')}`,
-        400,
+      return c.json(subRaceItem, 200);
+    },
+  )
+  .get(
+    '/by-race/:raceName',
+    zValidator('param', schemaRaces),
+    (c) => {
+      const { raceName } = c.req.valid('param');
+
+      const subRaceItem = Object.values(subraces2014).filter(
+        (sub) => sub.race.index === raceName,
       );
-    }
 
-    return {
-      subRaceName: subRaceName,
-    };
-  }),
-  subracesHandler.getBySubRaceName,
-);
-
-subRaces.get(
-  '/by-race/:raceName',
-  validator('param', (value, c) => {
-    const { raceName } = value;
-
-    if (
-      !raceName ||
-      typeof raceName !== 'string' ||
-      !racesKeys.includes(raceName)
-    ) {
-      return c.text(
-        `Subrace name invalid. Valid subraces: ${racesKeys}`,
-        400,
-      );
-    }
-
-    return {
-      raceName: raceName,
-    };
-  }),
-  subracesHandler.getBySubRaceByRaceName,
-);
+      return c.json(subRaceItem, 200);
+    },
+  );
 
 export default subRaces;
