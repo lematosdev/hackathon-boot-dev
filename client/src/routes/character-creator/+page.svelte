@@ -1,5 +1,6 @@
 <script lang="ts">
   import AbilityScore from '$lib/components/character-sheet/AbilityScore.svelte';
+  import AttacksRow from '$lib/components/character-sheet/AttacksRow.svelte';
   import MainInput from '$lib/components/character-sheet/MainInput.svelte';
   import Skills from '$lib/components/character-sheet/Skills.svelte';
   import {
@@ -80,6 +81,19 @@
     flaws:
       'I have a hard time resisting the allure of wealth, especially gold. Wealth can help me restore my legacy.',
   });
+
+  const equipment = [
+    {
+      name: 'greataxe',
+      atkBonus: '+5',
+      dmgType: '1d12 + 3 slashing',
+    },
+    {
+      name: 'javelin',
+      atkBonus: '+5',
+      dmgType: '1d6 + 3 piercing',
+    },
+  ];
 </script>
 
 <div class="flex justify-center character-form">
@@ -191,6 +205,7 @@
             <input
               class="border-0 text-center text-3xl w-full"
               type="number"
+              min="0"
               bind:value={temporaryHitPoints}
             />
           </div>
@@ -266,7 +281,33 @@
           </div>
         {/each}
       </div>
-      <div class="border rounded h-70"></div>
+      <div class="border rounded h-115 flex flex-col justify-between p-2">
+        <table class="table-auto">
+          <thead>
+            <tr>
+              <th class="uppercase text-[0.6rem] font-normal text-gray-400"
+                >name</th
+              >
+              <th class="uppercase text-[0.6rem] font-normal text-gray-400"
+                >atk bonus</th
+              >
+              <th class="uppercase text-[0.6rem] font-normal text-gray-400"
+                >damage/type</th
+              >
+            </tr>
+          </thead>
+          <tbody>
+            {#each equipment as { name, atkBonus, dmgType }}
+              <AttacksRow {name} {atkBonus} {dmgType} />
+            {/each}
+            <AttacksRow />
+            <AttacksRow />
+          </tbody>
+        </table>
+        <p class="uppercase text-center text-xs font-bold">
+          Attacks & spellcasting
+        </p>
+      </div>
       <div class="border rounded row-span-2"></div>
       <div class="border rounded h-70"></div>
       <div class="border rounded h-70"></div>
