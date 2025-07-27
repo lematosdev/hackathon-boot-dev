@@ -1,10 +1,13 @@
 <script lang="ts">
-  export let name: string;
-  export let charClass: string;
-  export let level: number;
-  export let imageUrl: string;
-  // export let onClick: () => void;
-  export let href: string = '/character-creator';
+  interface Props {
+    charName: string;
+    charClass: string;
+    level: number;
+    imageUrl?: string;
+    href?: string; 
+  }
+
+  let { charName = "", charClass = "", level = 0, imageUrl = "", href = "/character-creator" }: Props = $props();
 </script>
 
 <a
@@ -12,25 +15,25 @@
   {href}
 >
   <div
-    class="flex-2 mr-0 sm:mr-4 mb-2 sm:mb-0 flex justify-center relative w-[192px] h-[192px]"
+    class="flex-2 mr-0 sm:mr-4 mb-2 sm:mb-0 flex justify-center relative w-48 h-48"
   >
     <!-- Placeholder -->
     <div
-      class="absolute inset-0 bg-gray-200"
+      class="absolute inset-0 bg-gray-200 rounded"
     >
     </div>
     <!--  -->
     <img
       width="288"
       height="192"
-      class="rounded object-cover hidden sm:block"
+      class="rounded object-cover w-full h-full"
       src={imageUrl}
-      alt="{name} portrait"
+      alt="{charName} portrait"
     >
   </div>
 
   <div class="flex-1">
-    <h2 class="text-2xl mb-2 font-bold">{name.toUpperCase()}</h2>
+    <h2 class="text-2xl mb-2 font-bold">{charName.toUpperCase()}</h2>
 
     <p class="sm:block">{charClass} Level: {level}</p>
   </div>

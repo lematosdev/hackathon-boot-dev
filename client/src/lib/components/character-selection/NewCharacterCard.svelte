@@ -4,7 +4,7 @@
 
 <a
   {href}
-  class="border border-gray-600 cursor-pointer flex flex-col items-center justify-center sm:flex-row p-4 my-4 hover:border-yellow-500"
+  class="border border-gray-600 cursor-pointer flex flex-col items-center justify-center sm:flex-row p-4 my-4 hover:border-yellow-500 group"
   aria-label="Create a new character"
 >
   <div class="flex items-center justify-center">
