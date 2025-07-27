@@ -39,7 +39,7 @@
   ];
 
   const wisdomModifier = getAbilityModifier(
-    abilityScores.find(a => a.code === 'wis')?.value ?? 0
+    abilityScores.find((a) => a.code === 'wis')?.value ?? 0,
   );
 
   const mainInputs = [
@@ -56,7 +56,7 @@
   let proficiencies: string[] = $state([]);
 
   const initiative = getAbilityModifier(
-    abilityScores.find(a => a.code === 'dex')?.value || 0
+    abilityScores.find((a) => a.code === 'dex')?.value || 0,
   );
   const battleSkills = [
     { label: 'Armor class', value: 17 },
@@ -109,9 +109,10 @@
         <Skills
           {level}
           list={proficiencies}
-          skills={skills.map(s => ({
+          skills={skills.map((s) => ({
             ...s,
-            value: abilityScores.find(a => a.code === s.ability)?.value || 0,
+            value: abilityScores.find((a) => a.code === s.ability)
+              ?.value || 0,
           }))}
           title="Skills"
         />

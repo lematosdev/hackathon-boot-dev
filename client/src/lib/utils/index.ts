@@ -3,7 +3,7 @@ export function getAbilityModifier(score: number) {
 }
 
 export function getPlusSign(value: number) {
-  return value >= 10 ? "+" : "";
+  return value >= 10 ? '+' : '';
 }
 
 export function getProficiencyBonus(level: number) {
