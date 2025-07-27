@@ -8,7 +8,7 @@
   let { label, value }: Props = $props();
 </script>
 
-<div class="w-full h-34 border-3 bg-white">
+<div class="w-full h-34 border-3">
   <p class="uppercase text-center text-sm font-bold">{label}</p>
   <p class="grid place-items-center h-22">
     <span class="text-4xl font-">{getPlusSign(value)}{

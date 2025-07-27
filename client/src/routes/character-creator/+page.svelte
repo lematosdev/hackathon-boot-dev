@@ -68,10 +68,10 @@
   let currentHitPoints: number = $state(0);
 </script>
 
-<form method="post" class="p-14 text-black bg-white">
+<form method="post" class="p-14 text-white">
   <div class="flex w-full">
     <div class="flex flex-2 flex-col justify-center">
-      <input type="text" id="name" name="name" required />
+      <input class="border-0" type="text" id="name" name="name" required />
       <label for="name" class="uppercase">Character Name</label>
     </div>
     <div class="flex-4 grid grid-cols-3">
@@ -82,23 +82,23 @@
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     <div class="border rounded row-span-2 flex min-w-fit">
-      <div class="bg-gray-300 h-full w-32 p-3 flex flex-col gap-y-5">
+      <div class="h-full w-32 p-3 flex flex-col gap-y-5">
         {#each abilityScores as score}
           <AbilityScore label={score.label} value={score.value} />
         {/each}
       </div>
       <div class="h-full w-full flex flex-col items-center gap-y-3">
-        <div class="flex items-center justify-center relative left-3">
-          <p
-            class="w-20 h-14 rounded-full text-center border-4 border-black z-1 bg-white flex items-center justify-center"
+        <div class="flex items-center justify-center">
+          <span
+            class="w-20 h-14 rounded-full text-center border-4 border-white flex items-center justify-center"
           >
             +{getProficiencyBonus(level)}
-          </p>
-          <div
-            class="flex justify-between items-center pl-7 border-4 rounded-xl w-full bg-white h-13 relative right-6 text-sm"
+          </span>
+          <span
+            class="content-center text-center px-3 border-4 border-l-0 rounded-r-xl rounded-l-md w-full h-13 relative right-3.5 text-sm"
           >
             Proficiency Bonus
-          </div>
+          </span>
         </div>
         <Skills
           {level}
@@ -116,28 +116,24 @@
           }))}
           title="Skills"
         />
-        <div
-          class="flex items-center justify-center relative left-3 w-full max-w-60"
-        >
-          <p
-            class="w-20 h-14 rounded-full text-center border-4 border-black z-1 bg-white flex items-center justify-center"
+        <div class="flex items-center justify-center">
+          <span
+            class="w-20 h-14 rounded-full text-center border-4 border-white flex items-center justify-center"
           >
             {getPerception(wisdomModifier, level)}
-          </p>
-          <div
-            class="flex justify-between items-center pl-7 border-4 rounded-xl w-full max-w-52 bg-white h-13 relative right-6 text-sm text-center"
+          </span>
+          <span
+            class="content-center text-center px-3 border-4 border-l-0 rounded-r-xl rounded-l-md w-full h-13 relative right-3.5 text-sm"
           >
             Perception
-          </div>
+          </span>
         </div>
       </div>
     </div>
-    <div class="border rounded p-2 bg-gray-300">
+    <div class="border rounded p-2">
       <div class="flex gap-2">
         {#each battleSkills as skill}
-          <div
-            class="border rounded flex-1 flex flex-col justify-between p-2 bg-white"
-          >
+          <div class="border rounded flex-1 flex flex-col justify-between p-2">
             <div
               class="text-center w-full h-12 grid place-items-center text-2xl"
             >
@@ -150,7 +146,7 @@
           </div>
         {/each}
       </div>
-      <div class="bg-white border p-2">
+      <div class="border p-2">
         <div class="flex">
           <label for="hitPointMax">Hit Point Maximum</label>
           <input
