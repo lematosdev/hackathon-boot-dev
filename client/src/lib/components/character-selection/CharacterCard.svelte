@@ -4,10 +4,16 @@
     charClass: string;
     level: number;
     imageUrl?: string;
-    href?: string; 
+    href?: string;
   }
 
-  let { charName = "", charClass = "", level = 0, imageUrl = "", href = "/character-creator" }: Props = $props();
+  let {
+    charName = '',
+    charClass = '',
+    level = 0,
+    imageUrl = '',
+    href = '/character-creator',
+  }: Props = $props();
 </script>
 
 <a
