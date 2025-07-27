@@ -61,9 +61,6 @@ body {
   font-family: 'proxima-nova', system-ui, -apple-system, sans-serif;
 }
 
-input {
-  background: none;
-}
 
 @layer components {
   .h-full-minus-bar {
