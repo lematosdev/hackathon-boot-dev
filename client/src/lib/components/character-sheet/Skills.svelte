@@ -36,15 +36,15 @@
 
 <div class="border-2 rounded-lg max-w-52 w-full">
   {#each skills as skill}
-    <div class="flex gap-x-2 items-center p-1 text-sm">
+    <div class="flex gap-x-1 items-center p-1 text-sm">
       <input
-        class="rounded-full bg-transparent"
+        class="rounded-full size-3 bg-transparent"
         type="checkbox"
         name={skill.code}
         id={skill.code}
-        onchange={(e) => handleRadioChange(skill.code, e)}
+        onchange={e => handleRadioChange(skill.code, e)}
       />
-      <p class="border-b-1 w-6 text-center">
+      <p class="border-b-1 w-5 text-center">
         {getProficiency(list, skill.code, skill.value)}
       </p>
       <label class="text-xs" for={skill.code}>{skill.label}</label>
