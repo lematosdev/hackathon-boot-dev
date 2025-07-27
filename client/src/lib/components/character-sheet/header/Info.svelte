@@ -1,10 +1,18 @@
 <script lang="ts">
-  import { Select } from 'melt/builders';
-  import { VALID_CLASSES } from '@types';
+  import Select from '$lib/components/Select.svelte';
 
-  const options = VALID_CLASSES;
-  type Option = (typeof options)[number];
-  const select = new Select<Option>();
+  let {
+    classOptions,
+    backgroundOptions,
+    raceOptions,
+    alignmentOptions,
+    selectedAlignment = $bindable(),
+    selectedRace = $bindable(),
+    selectedClass = $bindable(),
+    selectedBackground = $bindable(),
+    playerName = $bindable(),
+    exp = $bindable(),
+  } = $props();
 </script>
 
 <div class="relative md:bottom-[3px]">
@@ -33,29 +41,31 @@
     />
     <text x="30" y="74" fill="white" class="text-xs">CLASS & LEVEL</text>
     <foreignObject x="30" y="40" width="220" height="55">
-      <button {...select.trigger} class="text-xs w-full text-left">
-        {
-          select.value
-            ? select.value[0].toUpperCase() +
-              select.value.substring(1)
-            : 'Select a Class'
-        }
-      </button>
-
-      <div {...select.content} class="p-2 w-full">
-        {#each options as option}
-          <div
-            {...select.getOption(option)}
-            class="divide-y border-white w-full"
-          >
-            {option[0].toUpperCase() + option.substring(1)}
-          </div>
-        {/each}
-      </div>
+      <Select
+        options={classOptions}
+        bind:selected={selectedClass}
+        label="Select your Class"
+      />
     </foreignObject>
     <text x="250" y="74" fill="white" class="text-xs">BACKGROUND</text>
+    <foreignObject x="250" y="40" width="220" height="55">
+      <Select
+        options={backgroundOptions}
+        bind:selected={selectedBackground}
+        label="Select your Background"
+      />
+    </foreignObject>
     <text x="450" y="74" fill="white" class="text-xs">PLAYER NAME</text>
-
+    <foreignObject x="450" y="40" width="220" height="55">
+      <input
+        class="border-0 placeholder:text-xs p-0 placeholder:text-white focus:outline-0 focus:shadow-none focus:ring-0"
+        type="text"
+        name="Player Name"
+        id=""
+        placeholder="Type your name"
+        bind:value={playerName}
+      />
+    </foreignObject>
     <line
       x1="25"
       y1="100"
@@ -65,7 +75,33 @@
       stroke-opacity="0.7"
     />
     <text x="30" y="114" fill="white" class="text-xs">RACE</text>
+    <foreignObject x="30" y="80" width="220" height="55">
+      <Select
+        options={raceOptions}
+        bind:selected={selectedRace}
+        label="Select your Race"
+      />
+    </foreignObject>
+
     <text x="250" y="114" fill="white" class="text-xs">ALIGMENT</text>
+    <foreignObject x="250" y="80" width="220" height="55">
+      <Select
+        options={alignmentOptions}
+        bind:selected={selectedAlignment}
+        label="Select your Alignment"
+      />
+    </foreignObject>
+
     <text x="450" y="114" fill="white" class="text-xs">EXPERIENCE POINTS</text>
+    <foreignObject x="450" y="80" width="220" height="55">
+      <input
+        class="border-0 placeholder:text-xs p-0 placeholder:text-white focus:outline-0 focus:shadow-none focus:ring-0"
+        type="number"
+        name="Experience Points"
+        id=""
+        placeholder="Type your current exp"
+        bind:value={exp}
+      />
+    </foreignObject>
   </svg>
 </div>
