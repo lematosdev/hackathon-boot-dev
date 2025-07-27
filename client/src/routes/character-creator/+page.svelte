@@ -56,7 +56,7 @@
   const level = 3;
   const hidDice = 8;
 
-  let proficiencies: string[] = $state([]);
+  let skillsWithProficiencies: string[] = $state([]);
 
   const initiative = getAbilityModifier(
     abilityScores.find((a) => a.code === 'dex')?.value || 0,
@@ -106,6 +106,27 @@
     gp: 40,
     pp: 0,
   });
+  const traits = [
+    {
+      name: 'Second Wind',
+      description:
+        'You have a limited well of stamina you can draw on to protect yourself from harm. You can use a bonus action to regain hit points equal to 1d10 + your fighter level.',
+    },
+    {
+      name: 'Fighting Style (Defense)',
+      description:
+        'While you are wearing armor, you gain a +1 bonus to ac. This bonus is already included in your ac.',
+    },
+  ];
+
+  const proficiencies = [
+    'all armor',
+    'shields',
+    'simple weapons',
+    'martial weapons',
+  ];
+
+  const languages = ['common', 'dwarvish', 'draconic', 'demonic'];
 </script>
 
 <div class="flex justify-center character-form">
@@ -143,13 +164,13 @@
           </div>
           <Skills
             {level}
-            list={proficiencies}
+            list={skillsWithProficiencies}
             skills={abilityScores}
             title="Saving Throws"
           />
           <Skills
             {level}
-            list={proficiencies}
+            list={skillsWithProficiencies}
             skills={skills.map((s) => ({
               ...s,
               value: abilityScores.find((a) => a.code === s.ability)
@@ -297,15 +318,15 @@
         <table class="table-auto">
           <thead>
             <tr>
-              <th class="uppercase text-[0.6rem] font-normal text-gray-400"
-                >name</th
-              >
-              <th class="uppercase text-[0.6rem] font-normal text-gray-400"
-                >atk bonus</th
-              >
-              <th class="uppercase text-[0.6rem] font-normal text-gray-400"
-                >damage/type</th
-              >
+              <th class="uppercase text-[0.6rem] font-normal text-gray-400">
+                name
+              </th>
+              <th class="uppercase text-[0.6rem] font-normal text-gray-400">
+                atk bonus
+              </th>
+              <th class="uppercase text-[0.6rem] font-normal text-gray-400">
+                damage/type
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -320,8 +341,34 @@
           Attacks & spellcasting
         </p>
       </div>
-      <div class="border rounded row-span-2"></div>
-      <div class="border rounded h-70"></div>
+      <div class="border rounded row-span-2 p-2 flex flex-col justify-between">
+        <div>
+          {#each traits as { name, description }}
+            <p class="text-sm">
+              <span class="font-bold italic pl-4">{name}.</span>
+              {description}
+            </p>
+          {/each}
+        </div>
+        <p class="uppercase text-sm font-bold text-center">Features & traits</p>
+      </div>
+      <div class="border rounded h-70 p-2 flex flex-col justify-between">
+        <div>
+          <div>
+            <p class="text-sm">
+              <span class="font-bold italic pl-4">Proficiencies.</span>
+              {proficiencies.join(', ')}
+            </p>
+            <p class="text-sm capitalize">
+              <span class="font-bold italic pl-4">Languages.</span>
+              {languages.join(', ')}
+            </p>
+          </div>
+        </div>
+        <p class="uppercase text-sm font-bold text-center">
+          Other proficiencies & languages
+        </p>
+      </div>
       <div
         class="relative border border-white rounded p-2 flex flex-col justify-center gap-y-2 h-70"
       >
@@ -355,11 +402,7 @@
             ></textarea>
           </div>
         </div>
-        <p
-          class="uppercase text-[0.6rem] text-center"
-        >
-          Equipment
-        </p>
+        <p class="uppercase text-[0.6rem] text-center">Equipment</p>
       </div>
     </div>
   </form>
