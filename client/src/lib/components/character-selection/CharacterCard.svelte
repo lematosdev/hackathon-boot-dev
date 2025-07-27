@@ -12,18 +12,18 @@
   {href}
 >
   <div
-    class="flex-2 mr-0 sm:mr-4 mb-2 sm:mb-0 flex justify-center relative w-[192px] h-[192px]"
+    class="flex-2 mr-0 sm:mr-4 mb-2 sm:mb-0 flex justify-center relative w-48 h-48"
   >
     <!-- Placeholder -->
     <div
-      class="absolute inset-0 bg-gray-200"
+      class="absolute inset-0 bg-gray-200 rounded"
     >
     </div>
     <!--  -->
     <img
       width="288"
       height="192"
-      class="rounded object-cover hidden sm:block"
+      class="rounded object-cover w-full h-full"
       src={imageUrl}
       alt="{name} portrait"
     >
