@@ -1,7 +1,7 @@
 <script lang="ts">
   import AbilityScore from '$lib/components/character-sheet/AbilityScore.svelte';
   import AttacksRow from '$lib/components/character-sheet/AttacksRow.svelte';
-  import Header from '$lib/components/character-sheet/header/Header.svelte';
+  import SheetHeader from '$lib/components/character-sheet/header/SheetHeader.svelte';
   import Skills from '$lib/components/character-sheet/Skills.svelte';
   import {
     camelCaseToNormalText,
@@ -131,7 +131,7 @@
 
 <div class="flex justify-center character-form">
   <form method="post" class="p-7 text-white max-w-270">
-    <Header />
+    <SheetHeader />
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div class="border rounded row-span-2 flex min-w-fit">
         <div class="h-full w-32 p-3 flex flex-col gap-y-5">
