@@ -10,6 +10,8 @@ import dnd, {
 const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY');
 
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+const systemInstruction =
+  'Eres un experto en D&D 5e que responde basándose únicamente en los datos proporcionados.';
 
 export async function generateBackstory(character: {
   race: RacesType;
@@ -27,9 +29,6 @@ export async function generateBackstory(character: {
   if (!raceData || !classData || !backgroundData || !subraceData) {
     throw new Error('Datos del personaje invalidos');
   }
-
-  const systemInstruction =
-    'Eres un experto en D&D 5e que responde basándose únicamente en los datos proporcionados.';
 
   const schema = {
     backstory: 'string',
@@ -68,8 +67,7 @@ export async function generateBackstory(character: {
     ${
     Object.entries(character.stats || {}).map(([stat, value]) =>
       `${stat}: ${value}`
-    )
-      .join(', ')
+    ).join(', ')
   }
 
     INSTRUCCIONES:
@@ -90,6 +88,44 @@ export async function generateBackstory(character: {
 
     Sigue este esquema: ${JSON.stringify(schema)}
     `;
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.0-flash-001',
+    contents: [prompt],
+    config: {
+      systemInstruction,
+    },
+  });
+
+  let cleanResponse = response.text.replace(/```json\s*/gi, '');
+  cleanResponse = cleanResponse.replace(/```\s*/g, '');
+
+  return cleanResponse;
+}
+
+export async function generateCharacterName({ race, gender = 'neutral' }: {
+  race: RacesType;
+  gender: 'male' | 'female' | 'neutral';
+}) {
+  const schema = {
+    fullName: 'string',
+    alias: 'string',
+    meaning: 'string',
+    culturalContext: 'string',
+  };
+
+  const prompt = `
+  Genera nombre y apellido para este personaje de D&D 5e:
+
+  RAZA DEL PERSONAJE: ${race}
+  GENERO DEL PERSONAJE: ${gender}
+
+  Sugiere un apodo y el significado del nombre
+
+  Responde ÚNICAMENTE en formato JSON válido
+
+  Sigue este esquema: ${JSON.stringify(schema)}
+  `;
 
   const response = await ai.models.generateContent({
     model: 'gemini-2.0-flash-001',
