@@ -41,7 +41,7 @@
   ];
 
   const wisdomModifier = getAbilityModifier(
-    abilityScores.find(a => a.code === 'wis')?.value ?? 0
+    abilityScores.find((a) => a.code === 'wis')?.value ?? 0,
   );
 
   const mainInputs = [
@@ -59,7 +59,7 @@
   let proficiencies: string[] = $state([]);
 
   const initiative = getAbilityModifier(
-    abilityScores.find(a => a.code === 'dex')?.value || 0
+    abilityScores.find((a) => a.code === 'dex')?.value || 0,
   );
   const battleSkills = [
     { label: 'Armor class', value: 17 },
@@ -82,7 +82,7 @@
       'I have a hard time resisting the allure of wealth, especially gold. Wealth can help me restore my legacy.',
   });
 
-  const equipment = [
+  const weapons = [
     {
       name: 'greataxe',
       atkBonus: '+5',
@@ -94,6 +94,18 @@
       dmgType: '1d6 + 3 piercing',
     },
   ];
+
+  let equipment = $state(
+    'Chain mail*, battleaxe, 3 javelins, backpack\n\n* While wearing this armor, you have disadvantage on Dexterity (Stealth) cheks',
+  );
+
+  let currencies = $state({
+    cp: 0,
+    sp: 0,
+    ep: 0,
+    gp: 40,
+    pp: 0,
+  });
 </script>
 
 <div class="flex justify-center character-form">
@@ -138,9 +150,10 @@
           <Skills
             {level}
             list={proficiencies}
-            skills={skills.map(s => ({
+            skills={skills.map((s) => ({
               ...s,
-              value: abilityScores.find(a => a.code === s.ability)?.value || 0,
+              value: abilityScores.find((a) => a.code === s.ability)
+                ?.value || 0,
             }))}
             title="Skills"
           />
@@ -181,8 +194,7 @@
         <div class="border p-2 rounded-t-xl">
           <div class="flex items-center">
             <label class="text-xs w-50" for="hitPointMax"
-              >Hit Point Maximum</label
-            >
+            >Hit Point Maximum</label>
             <input
               class="border-0 border-b h-6 w-full"
               type="number"
@@ -271,9 +283,9 @@
               name={bg}
               id={bg}
               class="text-xs w-full p-0 h-15 border-0 resize-none"
-              bind:value={
-                characterBackground[bg as keyof typeof characterBackground]
-              }
+              bind:value={characterBackground[
+                bg as keyof typeof characterBackground
+              ]}
             ></textarea>
             <p class="uppercase text-[0.6rem] text-center pt-2">
               {camelCaseToNormalText(bg)}
@@ -297,7 +309,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each equipment as { name, atkBonus, dmgType }}
+            {#each weapons as { name, atkBonus, dmgType }}
               <AttacksRow {name} {atkBonus} {dmgType} />
             {/each}
             <AttacksRow />
@@ -310,7 +322,45 @@
       </div>
       <div class="border rounded row-span-2"></div>
       <div class="border rounded h-70"></div>
-      <div class="border rounded h-70"></div>
+      <div
+        class="relative border border-white rounded p-2 flex flex-col justify-center gap-y-2 h-70"
+      >
+        <div class="flex h-full items-stretch">
+          <div
+            class="flex flex-col justify-start items-center space-y-1 mr-2 h-full gap-1"
+          >
+            {#each Object.keys(currencies) as coin}
+              <div
+                class="flex flex-col w-12 pb-2 full-h border first:rounded-t-md last:rounded-b-md flex items-center justify-center"
+              >
+                <label for={coin} class="text-xs uppercase">
+                  {coin}
+                </label>
+                <input
+                  id={coin}
+                  name={coin}
+                  bind:value={currencies[coin as keyof typeof currencies]}
+                  class="w-10 h-4 border-0 text-center leading-4 appearance-none text-xs"
+                />
+              </div>
+            {/each}
+          </div>
+          <div class="flex-1 border border-white rounded-lg py-2">
+            <textarea
+              name={equipment}
+              id={equipment}
+              bind:value={equipment}
+              class="w-full h-full text-xs border-0 resize-none text-justify"
+              placeholder="List your equipment…"
+            ></textarea>
+          </div>
+        </div>
+        <p
+          class="uppercase text-[0.6rem] text-center"
+        >
+          Equipment
+        </p>
+      </div>
     </div>
   </form>
 </div>
