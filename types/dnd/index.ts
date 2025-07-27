@@ -39,6 +39,7 @@ export type BackgroundTypes = keyof typeof backgrounds2014;
 export type ClassesType = keyof typeof classes2014;
 export type RacesType = keyof typeof races2014;
 export type AbilitiesType = keyof typeof abilityScores2024;
+export type Alignments2024Type = keyof typeof alignments2024;
 
 export const VALID_RACES = Object.keys(races2014) as (keyof typeof races2014)[];
 export const VALID_SUBRACES = Object.keys(subraces2014) as (keyof typeof subraces2014)[];

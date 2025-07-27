@@ -1,20 +1,42 @@
 <script lang="ts">
+	import Select from "$lib/components/Select.svelte";
 	import Char from "./Char.svelte";
 	import Info from "./Info.svelte";
-	import { Select } from "melt/builders";
-	import { VALID_CLASSES } from "@types";
-
-	const options = VALID_CLASSES;
-	type Option = (typeof options)[number];
-	const select = new Select<Option>();
+	import {
+		type Alignments2024Type,
+		type BackgroundTypes,
+		type ClassesType,
+		type RacesType,
+		VALID_ALIGNMENTS_2024,
+		VALID_BACKGROUNDS,
+		VALID_CLASSES,
+		VALID_RACES
+	} from "@types";
 
 	let charName = $state("");
+	let selectedClass: ClassesType | "" = $state("");
+	let selectedBackground: BackgroundTypes | "" = $state("");
+	let selectedRace: RacesType | "" = $state("");
+	let selectedAlignment: Alignments2024Type | "" = $state("");
+	let playerName = $state("");
+	let exp = $state(0);
 </script>
 
 <!-- MOBILE -->
 <div class="justify-center w-full md:hidden">
 	<Char bind:value={charName} />
-	<Info />
+	<Info
+		classOptions={VALID_CLASSES}
+		backgroundOptions={VALID_BACKGROUNDS}
+		raceOptions={VALID_RACES}
+		alignmentOptions={VALID_ALIGNMENTS_2024}
+		bind:selectedAlignment
+		bind:selectedRace
+		bind:selectedClass
+		bind:selectedBackground
+		bind:playerName
+		bind:exp
+	/>
 </div>
 
 <!-- DESKTOP -->
@@ -23,7 +45,7 @@
 		width="100%"
 		height="100%"
 		viewBox="0 0 1075 181"
-		class="hidden md:block"
+		class="hidden md:inline"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 	>
@@ -153,26 +175,33 @@
 		/>
 		<text x="465" y="102" fill="white" class="text-xs">CLASS & LEVEL</text>
 		<foreignObject x="465" y="70" width="220" height="55">
-			<button {...select.trigger} class="text-xs w-full text-left">
-				{select.value
-					? select.value[0].toUpperCase() + select.value.substring(1)
-					: "Select a Class"}
-			</button>
-
-			<div {...select.content} class="p-2 w-full">
-				{#each options as option}
-					<div
-						{...select.getOption(option)}
-						class="divide-y border-white w-full"
-					>
-						{option[0].toUpperCase() + option.substring(1)}
-					</div>
-				{/each}
-			</div>
+			<Select
+				options={VALID_CLASSES}
+				bind:selected={selectedClass}
+				label="Select your Class"
+			/>
 		</foreignObject>
-		<text x="700" y="102" fill="white" class="text-xs">BACKGROUND</text>
-		<text x="900" y="102" fill="white" class="text-xs">PLAYER NAME</text>
 
+		<text x="700" y="102" fill="white" class="text-xs">BACKGROUND</text>
+		<foreignObject x="700" y="70" width="220" height="55">
+			<Select
+				options={VALID_BACKGROUNDS}
+				bind:selected={selectedBackground}
+				label="Select your Background"
+			/>
+		</foreignObject>
+
+		<text x="900" y="102" fill="white" class="text-xs">PLAYER NAME</text>
+		<foreignObject x="900" y="70" width="220" height="55">
+			<input
+				class="border-0 placeholder:text-xs p-0 placeholder:text-white focus:outline-0 focus:shadow-none focus:ring-0"
+				type="text"
+				name="Player Name"
+				id=""
+				placeholder="Type your name"
+				bind:value={playerName}
+			/>
+		</foreignObject>
 		<line
 			x1="460"
 			y1="130"
@@ -181,9 +210,36 @@
 			stroke="white"
 			stroke-opacity="0.7"
 		/>
+
 		<text x="465" y="144" fill="white" class="text-xs">RACE</text>
+		<foreignObject x="465" y="110" width="220" height="55">
+			<Select
+				options={VALID_RACES}
+				bind:selected={selectedRace}
+				label="Select your Race"
+			/>
+		</foreignObject>
+
 		<text x="700" y="144" fill="white" class="text-xs">ALIGMENT</text>
+		<foreignObject x="700" y="110" width="220" height="55">
+			<Select
+				options={VALID_ALIGNMENTS_2024}
+				bind:selected={selectedAlignment}
+				label="Select your Alignment"
+			/>
+		</foreignObject>
+
 		<text x="900" y="144" fill="white" class="text-xs">EXPERIENCE POINTS</text>
+		<foreignObject x="900" y="110" width="220" height="55">
+			<input
+				class="border-0 placeholder:text-xs p-0 placeholder:text-white focus:outline-0 focus:shadow-none focus:ring-0"
+				type="number"
+				name="Experience Points"
+				id=""
+				placeholder="Type your current exp"
+				bind:value={exp}
+			/>
+		</foreignObject>
 	</svg>
 </div>
 
