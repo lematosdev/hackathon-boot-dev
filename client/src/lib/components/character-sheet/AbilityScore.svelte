@@ -11,14 +11,14 @@
 <div class="w-full h-34 border-3">
   <p class="uppercase text-center text-sm font-bold">{label}</p>
   <p class="grid place-items-center h-22">
-    <span class="text-4xl font-">{getPlusSign(value)}{
-      getAbilityModifier(value)
-    }</span>
+    <span class="text-4xl font-"
+      >{getPlusSign(value)}{getAbilityModifier(value)}</span
+    >
   </p>
   <div class="w-full flex justify-center">
     <input
       type="text"
-      class="rounded-full w-14 h-8 text-center border-3"
+      class="rounded-full w-14 h-8 text-center border-3 bg-white! text-black!"
       bind:value
       aria-label="{label} score"
     />
