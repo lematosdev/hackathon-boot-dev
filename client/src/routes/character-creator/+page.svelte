@@ -2,7 +2,6 @@
   import AbilityScore from '$lib/components/character-sheet/AbilityScore.svelte';
   import AttacksRow from '$lib/components/character-sheet/AttacksRow.svelte';
   import Header from '$lib/components/character-sheet/header/Header.svelte';
-  import MainInput from '$lib/components/character-sheet/MainInput.svelte';
   import Skills from '$lib/components/character-sheet/Skills.svelte';
   import {
     camelCaseToNormalText,
