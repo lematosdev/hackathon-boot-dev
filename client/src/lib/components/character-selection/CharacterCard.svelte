@@ -3,8 +3,7 @@
   export let charClass: string;
   export let level: number;
   export let imageUrl: string;
-  // export let onClick: () => void;
-  export let href: string = '/character-creator';
+  export let href: string = `/character-creator/`;
 </script>
 
 <a

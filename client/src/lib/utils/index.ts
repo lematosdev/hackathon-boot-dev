@@ -17,3 +17,20 @@ export function getProficiencyBonus(level: number) {
 export function getPerception(wisdomModifier: number, level: number) {
   return wisdomModifier + 10 + getProficiencyBonus(level);
 }
+
+export function saveTestCharacters(testCharacters: CharacterSheet[]) {
+  const characters: CharacterSheet[] = testCharacters;
+  localStorage.setItem('characters', JSON.stringify(characters));
+}
+
+export function loadCharacters(): CharacterSheet[] {
+  const json = localStorage.getItem('characters');
+  if (!json) return [];
+  try {
+    return JSON.parse(json) as CharacterSheet[];
+  } catch {
+    console.warn('Corrupted characters in localStorage, resetting');
+    localStorage.removeItem('characters');
+    return [];
+  }
+}
