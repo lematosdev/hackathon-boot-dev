@@ -6,5 +6,11 @@
 	},
 	"[typescript]": {
 		"editor.defaultFormatter": "denoland.vscode-deno"
+	},
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"[tailwindcss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }
