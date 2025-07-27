@@ -42,7 +42,7 @@
         type="checkbox"
         name={skill.code}
         id={skill.code}
-        onchange={e => handleRadioChange(skill.code, e)}
+        onchange={(e) => handleRadioChange(skill.code, e)}
       />
       <p class="border-b-1 w-6 text-center">
         {getProficiency(list, skill.code, skill.value)}

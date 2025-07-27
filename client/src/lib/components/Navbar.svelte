@@ -59,22 +59,22 @@
         </button>
       </div>
 
-			<div class="flex-1 flex items-center justify-center sm:justify-evenly">
-				<div class="h-full">
-					<a href="/" class="text-xl font-bold">
-						<img src="/logo.png" height="48" class="h-12" alt="Logo" />
-					</a>
-				</div>
-				<div class="hidden md:flex lg:ml-2">
-					<div class="flex text-sm h-full items-center lg:space-x-4">
-						{#each links as { href, label }}
-							<div class="group flex flex-col items-center justify-center">
-								<a
-									{href}
-									class="text-gray-300 hover:text-white px-3 py-2 rounded"
-								>
-									{label}
-								</a>
+      <div class="flex-1 flex items-center justify-center sm:justify-evenly">
+        <div class="h-full">
+          <a href="/" class="text-xl font-bold">
+            <img src="/logo.png" height="48" class="h-12" alt="Logo" />
+          </a>
+        </div>
+        <div class="hidden md:flex lg:ml-2">
+          <div class="flex text-sm h-full items-center lg:space-x-4">
+            {#each links as { href, label }}
+              <div class="group flex flex-col items-center justify-center">
+                <a
+                  {href}
+                  class="text-gray-300 hover:text-white px-3 py-2 rounded"
+                >
+                  {label}
+                </a>
 
                 <div
                   style="max-width: 9rem"
