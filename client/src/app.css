@@ -1,128 +1,128 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
 :root {
-	color-scheme: dark;
+  color-scheme: dark;
 
-	--red-500: #c05460;
+  --red-500: #c05460;
 
-	--blue-300: hsl(235, 91%, 81%);
-	--blue-350: hsl(235, 89%, 77%);
-	--blue-400: hsl(235, 88%, 73%);
-	--blue-450: hsl(235, 87%, 69%);
-	--blue-500: hsl(235, 86%, 65%);
-	--blue-600: hsl(235, 89%, 57%);
+  --blue-300: hsl(235, 91%, 81%);
+  --blue-350: hsl(235, 89%, 77%);
+  --blue-400: hsl(235, 88%, 73%);
+  --blue-450: hsl(235, 87%, 69%);
+  --blue-500: hsl(235, 86%, 65%);
+  --blue-600: hsl(235, 89%, 57%);
 
-	--gray-50: #f5f7f9;
-	--gray-100: #e8ecf1;
-	--gray-150: #dde3eb;
-	--gray-200: #d7dee6;
-	--gray-250: #c4d1db;
-	--gray-300: #b2c1d0;
-	--gray-350: #a3b3c7;
-	--gray-400: #919dab;
-	--gray-450: #818a98;
-	--gray-500: #6e7888;
-	--gray-550: #606877;
-	--gray-600: #4e5564;
-	--gray-650: #454b59;
-	--gray-700: #3c424f;
-	--gray-750: #323845;
-	--gray-800: #252936;
-	--gray-850: #202330;
-	--gray-900: #181b26;
-	--gray-950: #121620;
+  --gray-50: #f5f7f9;
+  --gray-100: #e8ecf1;
+  --gray-150: #dde3eb;
+  --gray-200: #d7dee6;
+  --gray-250: #c4d1db;
+  --gray-300: #b2c1d0;
+  --gray-350: #a3b3c7;
+  --gray-400: #919dab;
+  --gray-450: #818a98;
+  --gray-500: #6e7888;
+  --gray-550: #606877;
+  --gray-600: #4e5564;
+  --gray-650: #454b59;
+  --gray-700: #3c424f;
+  --gray-750: #323845;
+  --gray-800: #252936;
+  --gray-850: #202330;
+  --gray-900: #181b26;
+  --gray-950: #121620;
 
-	--yellow-50: #fffaeb;
-	--yellow-100: #fef4d1;
-	--yellow-150: #fde9b0;
-	--yellow-200: #fddf8f;
-	--yellow-250: #fcd570;
-	--yellow-300: #f6bd45;
-	--yellow-350: #eeb23f;
-	--yellow-400: #e5ae3c;
-	--yellow-450: #dca336;
-	--yellow-500: #efbb03;
-	--yellow-550: #d69e02;
-	--yellow-600: #c18500;
-	--yellow-650: #a96f06;
-	--yellow-700: #905a0a;
-	--yellow-750: #7b4d0c;
-	--yellow-800: #64400e;
-	--yellow-850: #4e3310;
-	--yellow-900: #3b2710;
-	--yellow-950: #2a1c0c;
+  --yellow-50: #fffaeb;
+  --yellow-100: #fef4d1;
+  --yellow-150: #fde9b0;
+  --yellow-200: #fddf8f;
+  --yellow-250: #fcd570;
+  --yellow-300: #f6bd45;
+  --yellow-350: #eeb23f;
+  --yellow-400: #e5ae3c;
+  --yellow-450: #dca336;
+  --yellow-500: #efbb03;
+  --yellow-550: #d69e02;
+  --yellow-600: #c18500;
+  --yellow-650: #a96f06;
+  --yellow-700: #905a0a;
+  --yellow-750: #7b4d0c;
+  --yellow-800: #64400e;
+  --yellow-850: #4e3310;
+  --yellow-900: #3b2710;
+  --yellow-950: #2a1c0c;
 
-	--top-nav-bar-height: 56px;
+  --top-nav-bar-height: 56px;
 }
 
 body {
-	font-family: "proxima-nova", system-ui, -apple-system, sans-serif;
+  font-family: 'proxima-nova', system-ui, -apple-system, sans-serif;
 }
 
 @layer components {
-	.h-full-minus-bar {
-		height: calc(100vh - var(--top-nav-bar-height) - 1px);
-	}
+  .h-full-minus-bar {
+    height: calc(100vh - var(--top-nav-bar-height) - 1px);
+  }
 
-	.top-nav-bar-height {
-		height: var(--top-nav-bar-height);
-	}
-	.textlink {
-		@apply cursor-pointer underline hover:opacity-70;
-	}
+  .top-nav-bar-height {
+    height: var(--top-nav-bar-height);
+  }
+  .textlink {
+    @apply cursor-pointer underline hover:opacity-70;
+  }
 
-	.block-button-primary {
-		@apply relative block origin-bottom overflow-hidden rounded-full border text-center text-sm text-gray-900 font-semibold bg-blend-soft-light px-4 py-2 shadow-md focus:outline-none disabled:scale-100 disabled:cursor-not-allowed;
-		background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"),
-			radial-gradient(
-				circle at center,
-				rgba(255, 255, 255, 0.3),
-				transparent 70%
-			),
-			linear-gradient(
-				to bottom,
-				var(--yellow-350),
-				var(--yellow-450),
-				var(--yellow-550)
-			);
-		border-color: var(--yellow-200);
-	}
+  .block-button-primary {
+    @apply relative block origin-bottom overflow-hidden rounded-full border text-center text-sm text-gray-900 font-semibold bg-blend-soft-light px-4 py-2 shadow-md focus:outline-none disabled:scale-100 disabled:cursor-not-allowed;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"),
+      radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.3),
+        transparent 70%
+      ),
+      linear-gradient(
+        to bottom,
+        var(--yellow-350),
+        var(--yellow-450),
+        var(--yellow-550)
+      );
+    border-color: var(--yellow-200);
+  }
 
-	.block-button-primary:hover {
-		background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"),
-			radial-gradient(
-				circle at center,
-				rgba(255, 255, 255, 0.3),
-				transparent 30%
-			),
-			linear-gradient(to bottom, var(--yellow-500), var(--yellow-550));
-		border-color: var(--yellow-450);
-	}
+  .block-button-primary:hover {
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"),
+      radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.3),
+        transparent 30%
+      ),
+      linear-gradient(to bottom, var(--yellow-500), var(--yellow-550));
+    border-color: var(--yellow-450);
+  }
 
-	.block-button-secondary {
-		@apply relative block origin-bottom overflow-hidden rounded-full border text-center text-sm text-gray-900 font-semibold bg-blend-soft-light px-4 py-2 shadow-md focus:outline-none disabled:scale-100 disabled:cursor-not-allowed;
-		background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"),
-			radial-gradient(
-				circle at center,
-				rgba(255, 255, 255, 0.3),
-				transparent 70%
-			),
-			linear-gradient(to bottom, var(--gray-250), #e2e2e6);
-		border-color: #f8f8fa;
-	}
+  .block-button-secondary {
+    @apply relative block origin-bottom overflow-hidden rounded-full border text-center text-sm text-gray-900 font-semibold bg-blend-soft-light px-4 py-2 shadow-md focus:outline-none disabled:scale-100 disabled:cursor-not-allowed;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"),
+      radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.3),
+        transparent 70%
+      ),
+      linear-gradient(to bottom, var(--gray-250), #e2e2e6);
+    border-color: #f8f8fa;
+  }
 
-	.bg-image-blue {
-		background: url(/img/800/maptexture2.webp),
-			linear-gradient(var(--gray-950), var(--gray-900));
-		background-blend-mode: overlay;
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-	}
+  .bg-image-blue {
+    background: url(/img/800/maptexture2.webp),
+      linear-gradient(var(--gray-950), var(--gray-900));
+    background-blend-mode: overlay;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 
-	.nav-focus-indicator {
-		@apply h-1 w-full scale-x-0 transform bg-yellow-400 transition-transform duration-200 ease-out group-hover:scale-x-100;
-	}
+  .nav-focus-indicator {
+    @apply h-1 w-full scale-x-0 transform bg-yellow-400 transition-transform duration-200 ease-out group-hover:scale-x-100;
+  }
 }

@@ -1,59 +1,174 @@
-<script>
+<script lang="ts">
   import AbilityScore from '$lib/components/character-sheet/AbilityScore.svelte';
+  import MainInput from '$lib/components/character-sheet/MainInput.svelte';
+  import Skills from '$lib/components/character-sheet/Skills.svelte';
+  import {
+    getAbilityModifier,
+    getPerception,
+    getProficiencyBonus,
+  } from '$lib/utils';
 
   const abilityScores = [
-    { label: 'Strength', value: 10, modifier: 0 },
-    { label: 'Dexterity', value: 12, modifier: 1 },
-    { label: 'Constitution', value: 14, modifier: 2 },
-    { label: 'Intelligence', value: 13, modifier: 1 },
-    { label: 'Wisdom', value: 15, modifier: 2 },
-    { label: 'Charisma', value: 8, modifier: -1 },
+    { label: 'Strength', value: 10, code: 'str' },
+    { label: 'Dexterity', value: 12, code: 'dex' },
+    { label: 'Constitution', value: 14, code: 'con' },
+    { label: 'Intelligence', value: 13, code: 'int' },
+    { label: 'Wisdom', value: 15, code: 'wis' },
+    { label: 'Charisma', value: 8, code: 'cha' },
   ];
+
+  const skills = [
+    { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
+    { label: 'Animal Handling', ability: 'wis', code: 'animal-handling' },
+    { label: 'Arcana', ability: 'int', code: 'arcana' },
+    { label: 'Athletics', ability: 'str', code: 'athletics' },
+    { label: 'Deception', ability: 'cha', code: 'deception' },
+    { label: 'History', ability: 'int', code: 'history' },
+    { label: 'Insight', ability: 'wis', code: 'insight' },
+    { label: 'Intimidation', ability: 'cha', code: 'intimidation' },
+    { label: 'Investigation', ability: 'int', code: 'investigation' },
+    { label: 'Medicine', ability: 'wis', code: 'medicine' },
+    { label: 'Nature', ability: 'int', code: 'nature' },
+    { label: 'Perception', ability: 'wis', code: 'perception' },
+    { label: 'Performance', ability: 'cha', code: 'performance' },
+    { label: 'Persuasion', ability: 'cha', code: 'persuasion' },
+    { label: 'Religion', ability: 'int', code: 'religion' },
+    { label: 'Sleight of Hand', ability: 'dex', code: 'sleight-of-hand' },
+    { label: 'Stealth', ability: 'dex', code: 'stealth' },
+    { label: 'Survival', ability: 'wis', code: 'survival' },
+  ];
+
+  const wisdomModifier = getAbilityModifier(
+    abilityScores.find(a => a.code === 'wis')?.value || 0
+  );
+
+  const mainInputs = [
+    { label: 'Class & Level' },
+    { label: 'Background' },
+    { label: 'Player Name' },
+    { label: 'Race' },
+    { label: 'Alignment' },
+    { label: 'Experience Points' },
+  ];
+
+  const level = 3;
+
+  let proficiencies: string[] = $state([]);
+
+  const initiative = getAbilityModifier(
+    abilityScores.find(a => a.code === 'dex')?.value || 0
+  );
+  const battleSkills = [
+    { label: 'Armor class', value: 17 },
+    { label: 'Initiative', value: initiative },
+    { label: 'Speed', value: 30, unit: 'feet' },
+  ];
+
+  let hitPointMax: number = $state(0);
+  let currentHitPoints: number = $state(0);
 </script>
 
-<form action="post" class="p-14">
+<form action="post" class="p-14 text-black bg-white">
   <div class="flex w-full">
     <div class="flex flex-2 flex-col justify-center">
       <input type="text" id="name" name="name" required />
       <label for="name" class="uppercase">Character Name</label>
     </div>
     <div class="flex-4 grid grid-cols-3">
-      <div class="flex flex-col">
-        <input type="text" id="class" name="class" required />
-        <label for="class" class="uppercase">Class & Level</label>
-      </div>
-      <div class="flex flex-col">
-        <input type="text" id="class" name="class" required />
-        <label for="class" class="uppercase">Background</label>
-      </div>
-      <div class="flex flex-col">
-        <input type="text" id="class" name="class" required />
-        <label for="class" class="uppercase">Player Name</label>
-      </div>
-      <div class="flex flex-col">
-        <input type="text" id="class" name="class" required />
-        <label for="class" class="uppercase">Race</label>
-      </div>
-      <div class="flex flex-col">
-        <input type="text" id="class" name="class" required />
-        <label for="class" class="uppercase">Alignmnent</label>
-      </div>
-      <div class="flex flex-col">
-        <input type="text" id="class" name="class" required />
-        <label for="class" class="uppercase">Experience Points</label>
-      </div>
+      {#each mainInputs as input}
+        <MainInput label={input.label} />
+      {/each}
     </div>
   </div>
-  <div class="grid grid-cols-3 gap-4">
-    <div class="border rounded row-span-2 flex">
-      <div class="bg-gray-400 h-full w-36 p-3">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="border rounded row-span-2 flex min-w-fit">
+      <div class="bg-gray-300 h-full w-32 p-3 flex flex-col gap-y-5">
         {#each abilityScores as score}
           <AbilityScore label={score.label} value={score.value} />
         {/each}
       </div>
-      <div class="h-full w-2/3 bg-red-300"></div>
+      <div class="h-full w-full flex flex-col items-center gap-y-3">
+        <div class="flex items-center justify-center relative left-3">
+          <p
+            class="w-20 h-14 rounded-full text-center border-4 border-black z-1 bg-white flex items-center justify-center"
+          >
+            +{getProficiencyBonus(level)}
+          </p>
+          <div
+            class="flex justify-between items-center pl-7 border-4 rounded-xl w-full bg-white h-13 relative right-6 text-sm"
+          >
+            Proficiency Bonus
+          </div>
+        </div>
+        <Skills
+          {level}
+          list={proficiencies}
+          skills={abilityScores}
+          title="Saving Throws"
+        />
+        <Skills
+          {level}
+          list={proficiencies}
+          skills={skills.map(s => ({
+            ...s,
+            value: abilityScores.find(a => a.code === s.ability)?.value || 0,
+          }))}
+          title="Skills"
+        />
+        <div
+          class="flex items-center justify-center relative left-3 w-full max-w-60"
+        >
+          <p
+            class="w-20 h-14 rounded-full text-center border-4 border-black z-1 bg-white flex items-center justify-center"
+          >
+            {getPerception(wisdomModifier, level)}
+          </p>
+          <div
+            class="flex justify-between items-center pl-7 border-4 rounded-xl w-full max-w-52 bg-white h-13 relative right-6 text-sm text-center"
+          >
+            Perception
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="border rounded h-80"></div>
+    <div class="border rounded p-2 bg-gray-300">
+      <div class="flex gap-2">
+        {#each battleSkills as skill}
+          <div
+            class="border rounded flex-1 flex flex-col justify-between p-2 bg-white"
+          >
+            <div
+              class="text-center w-full h-12 grid place-items-center text-2xl"
+            >
+              {skill.value}
+              {#if skill.unit}
+                {skill.unit}
+              {/if}
+            </div>
+            <p class="uppercase text-center text-xs">{skill.label}</p>
+          </div>
+        {/each}
+      </div>
+      <div class="bg-white border p-2">
+        <div class="flex">
+          <label for="hitPointMax">Hit Point Maximum</label>
+          <input
+            class="border-0 border-b h-6"
+            type="text"
+            id="hitPointMax"
+            name="hitPointMax"
+            bind:value={hitPointMax}
+          />
+        </div>
+        <div>
+          <input
+            class="border-0 text-center text-4xl w-full"
+            type="text"
+            bind:value={currentHitPoints}
+          />
+        </div>
+      </div>
+    </div>
     <div class="border rounded h-80"></div>
     <div class="border rounded h-70"></div>
     <div class="border rounded row-span-2"></div>
