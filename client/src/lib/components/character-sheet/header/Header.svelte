@@ -7,11 +7,13 @@
 	const options = VALID_CLASSES;
 	type Option = (typeof options)[number];
 	const select = new Select<Option>();
+
+	let charName = $state("");
 </script>
 
 <!-- MOBILE -->
 <div class="justify-center w-full md:hidden">
-	<Char />
+	<Char bind:value={charName} />
 	<Info />
 </div>
 
@@ -134,6 +136,7 @@
 				name="Character Name"
 				id="char-name"
 				class="bg-transparent border-0 w-full h-full text-4xl"
+				bind:value={charName}
 			/>
 		</foreignObject>
 		<foreignObject x="80" y="135" width="160" height="160">
@@ -167,7 +170,7 @@
 				{/each}
 			</div>
 		</foreignObject>
-		<text x="750" y="102" fill="white" class="text-xs">BACKGROUND</text>
+		<text x="700" y="102" fill="white" class="text-xs">BACKGROUND</text>
 		<text x="900" y="102" fill="white" class="text-xs">PLAYER NAME</text>
 
 		<line
@@ -179,7 +182,18 @@
 			stroke-opacity="0.7"
 		/>
 		<text x="465" y="144" fill="white" class="text-xs">RACE</text>
-		<text x="750" y="144" fill="white" class="text-xs">ALIGMENT</text>
+		<text x="700" y="144" fill="white" class="text-xs">ALIGMENT</text>
 		<text x="900" y="144" fill="white" class="text-xs">EXPERIENCE POINTS</text>
 	</svg>
 </div>
+
+<style>
+	@import url("https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap");
+
+	:global(#char-name) {
+		font-family: "Lavishly Yours", cursive;
+		font-weight: 400;
+		font-style: normal;
+		text-align: center;
+	}
+</style>

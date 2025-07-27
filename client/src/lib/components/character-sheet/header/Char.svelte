@@ -1,3 +1,7 @@
+<script lang="ts">
+	let { value = $bindable() } = $props();
+</script>
+
 <div class="relative md:left-1 md:bottom-7">
 	<svg
 		width="100%"
@@ -13,6 +17,7 @@
 				name="Character Name"
 				id="char-name"
 				class="bg-transparent border-0 w-full h-full text-4xl"
+				bind:value
 			/>
 		</foreignObject>
 		<foreignObject x="80" y="135" width="160" height="160">
@@ -125,13 +130,3 @@
 		/>
 	</svg>
 </div>
-
-<style>
-	@import url("https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap");
-
-	#char-name {
-		font-family: "Lavishly Yours", cursive;
-		font-weight: 400;
-		font-style: normal;
-	}
-</style>
