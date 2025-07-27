@@ -34,11 +34,11 @@
   };
 </script>
 
-<div class="border-2 rounded-lg bg-white max-w-52 w-full">
+<div class="border-2 rounded-lg max-w-52 w-full">
   {#each skills as skill}
     <div class="flex gap-x-2 items-center p-1 text-sm">
       <input
-        class="rounded-full"
+        class="rounded-full bg-transparent"
         type="checkbox"
         name={skill.code}
         id={skill.code}
