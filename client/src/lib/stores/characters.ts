@@ -1,5 +1,6 @@
 import { goto } from '$app/navigation';
 import { derived, get, writable } from 'svelte/store';
+import { browser } from '$app/environment';
 import type { CharacterSheet, VALID_CLASSES } from '@types';
 import { blankCharacter } from '$lib/constants/blankcharacter';
 
@@ -12,8 +13,10 @@ export interface CharacterListItem {
 function createCharacters() {
   let initial: CharacterSheet[] = [];
   try {
-    const raw = localStorage.getItem('characters');
-    if (raw) initial = JSON.parse(raw);
+    if (browser) {
+      const raw = localStorage.getItem('characters');
+      if (raw) initial = JSON.parse(raw);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -21,18 +24,22 @@ function createCharacters() {
   const { subscribe, set, update } = writable<CharacterSheet[]>(initial);
 
   const unsubscribe = subscribe((current) => {
-    localStorage.setItem('characters', JSON.stringify(current));
+    if (browser) {
+      localStorage.setItem('characters', JSON.stringify(current));
+    }
   });
 
   function saveToLocalStorage() {
-    const all = get(characters);
-    localStorage.setItem('characters', JSON.stringify(all));
+    if (browser) {
+      const all = get(characters);
+      localStorage.setItem('characters', JSON.stringify(all));
+    }
   }
 
   return { subscribe, set, update, unsubscribe, saveToLocalStorage };
 }
 
-export const characters = createCharacters();
+const characters = createCharacters();
 
 export const characterList = derived(
   characters,
