@@ -1,10 +1,16 @@
 <script lang="ts">
 	import AbilityScore from "$lib/components/character-sheet/AbilityScore.svelte";
+	import ArmorClass from "$lib/components/character-sheet/ArmorClass.svelte";
 	import AttacksRow from "$lib/components/character-sheet/AttacksRow.svelte";
+	import Backstory from "$lib/components/character-sheet/Backstory.svelte";
+	import Box from "$lib/components/character-sheet/Box.svelte";
 	import SheetHeader from "$lib/components/character-sheet/header/SheetHeader.svelte";
+	import HitPoints from "$lib/components/character-sheet/HitPoints.svelte";
+	import Perception from "$lib/components/character-sheet/Perception.svelte";
+	import ProficiencyBonus from "$lib/components/character-sheet/ProficiencyBonus.svelte";
 	import Skills from "$lib/components/character-sheet/Skills.svelte";
 	import {
-		camelCaseToNormalText,
+		getAbilityModifier,
 		getPerception,
 		getProficiencyBonus
 	} from "$lib/utils";
@@ -39,21 +45,18 @@
 		{ label: "Survival", ability: "wis", code: "survival" }
 	];
 
-	const mainInputs = [
-		{ label: "Class & Level", code: "class-level", value: "" },
-		{ label: "Background", code: "background", value: "" },
-		{ label: "Player Name", code: "player-name", value: "" },
-		{ label: "Race", code: "race", value: "" },
-		{ label: "Alignment", code: "alignment", value: "" },
-		{ label: "Experience Points", code: "experience-points", value: "" }
-	];
-
 	const level = $currentCharacter.level;
 
+	let skillsWithProficiencies: string[] = $state([]);
+
+	const initiative = getAbilityModifier(
+		$abilityScores.find((a) => a.code === "dex")?.value || 0
+	);
+
 	let hitDice = $state($currentCharacter.hitDice.die || 6);
-	let hitPointMax = $state($currentCharacter.hitPoints.maximum || 0);
-	let currentHitPoints = $state($currentCharacter.hitPoints.current || 0);
-	let temporaryHitPoints = $state($currentCharacter.hitPoints.temporary || 0);
+	let hpMax = $state($currentCharacter.hitPoints.maximum || 0);
+	let currentHp = $state($currentCharacter.hitPoints.current || 0);
+	let tempHp = $state($currentCharacter.hitPoints.temporary || 0);
 
 	let characterBackground: {
 		personalityTraits: string;
@@ -118,133 +121,54 @@
 	});
 </script>
 
-<div class="flex justify-center character-form">
-	<form method="post" class="p-7 text-white max-w-270">
+<div class="flex justify-center character-form lg:mx-64">
+	<form method="post" class="md:p-7 text-white">
 		<SheetHeader />
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-			<div class="border rounded row-span-2 flex min-w-fit">
-				<div class="h-full w-32 p-3 flex flex-col gap-y-5">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+			<div class="row-span-2 flex justify-center gap-1 md:min-w-min p-1">
+				<div
+					class="w-24 md:w-44 p-2 h-fit flex flex-col gap-3 md:gap-0 bg-gray-600/25 rounded-2xl mt-10"
+				>
 					{#each $abilityScores as score}
 						<AbilityScore label={score.label} value={score.value} />
 					{/each}
 				</div>
-				<div class="h-full w-full flex flex-col items-center gap-y-3">
-					<div class="flex items-center justify-center">
-						<span
-							class="w-20 h-14 rounded-full text-center border-4 border-white flex items-center justify-center"
-						>
-							+{getProficiencyBonus(level)}
-						</span>
-						<span
-							class="content-center text-center px-3 border-4 border-l-0 rounded-r-xl rounded-l-md w-full h-13 relative right-3.5 text-sm"
-						>
-							Proficiency Bonus
-						</span>
-					</div>
+				<div
+					class="md:h-full w-64 md:w-full flex flex-col items-center gap-y-2"
+				>
+					<ProficiencyBonus proficiency={getProficiencyBonus(level)} />
+
 					<Skills
 						{level}
-						list={saveThrowProfs}
+						list={skillsWithProficiencies}
 						skills={$abilityScores}
 						title="Saving Throws"
+						class="bg-[url(/sheet/st-bg.svg)] h-[232px] p-3.5"
 					/>
 					<Skills
 						{level}
-						list={skillProfs}
+						list={skillsWithProficiencies}
 						skills={skills.map((s) => ({
 							...s,
 							value:
 								$abilityScores.find((a) => a.code === s.ability)?.value || 0
 						}))}
 						title="Skills"
+						class="bg-[url(/sheet/skill-bg.svg)] h-[611px] p-3.5"
 					/>
-					<div class="flex items-center justify-center">
-						<span
-							class="w-20 h-14 rounded-full text-center border-4 border-white flex items-center justify-center"
-						>
-							{getPerception($wisdomModifier, level)}
-						</span>
-						<span
-							class="content-center text-center px-3 border-4 border-l-0 rounded-r-xl rounded-l-md w-full h-13 relative right-3.5 text-sm"
-						>
-							Perception
-						</span>
-					</div>
+					<Perception perception={getPerception($wisdomModifier, level)} />
 				</div>
 			</div>
 			<div
-				class="border rounded p-2 flex flex-col justify-center gap-y-2 h-114"
+				class="bg-gray-600/25 rounded-2xl p-4 flex flex-col justify-start gap-y-2"
 			>
-				<div class="flex gap-2">
-					{#each $battleSkills as skill}
-						<div
-							class="border rounded flex-1 flex flex-col justify-between p-2"
-						>
-							<div
-								class="text-center w-full h-12 grid place-items-center text-2xl"
-							>
-								{skill.value}
-								{#if skill.unit}
-									{skill.unit}
-								{/if}
-							</div>
-							<p class="uppercase text-center text-xs">{skill.label}</p>
-						</div>
-					{/each}
+				<div class="flex justify-around">
+					<ArmorClass armorClass={17} />
+					<Box label="INITIATIVE" value={initiative} />
+					<Box label="SPEED" value={30} />
 				</div>
-				<div class="border p-2 rounded-t-xl">
-					<div class="flex items-center">
-						<label class="text-xs w-50" for="hitPointMax"
-							>Hit Point Maximum</label
-						>
-						<input
-							class="border-0 border-b h-6 w-full"
-							type="number"
-							id="hitPointMax"
-							name="hitPointMax"
-							bind:value={hitPointMax}
-							oninput={() =>
-								saveCurrent({
-									hitPoints: {
-										...$currentCharacter.hitPoints,
-										maximum: hitPointMax
-									}
-								})}
-						/>
-					</div>
-					<div>
-						<input
-							class="border-0 text-center text-3xl w-full"
-							type="number"
-							bind:value={currentHitPoints}
-							oninput={() =>
-								saveCurrent({
-									hitPoints: {
-										...$currentCharacter.hitPoints,
-										current: currentHitPoints
-									}
-								})}
-						/>
-					</div>
-					<p class="uppercase text-center text-xs">Current hit points</p>
-				</div>
-				<div class="border p-2 rounded-b-xl">
-					<div>
-						<input
-							class="border-0 text-center text-3xl w-full"
-							type="number"
-							min="0"
-							bind:value={temporaryHitPoints}
-							oninput={() =>
-								saveCurrent({
-									hitPoints: {
-										...$currentCharacter.hitPoints,
-										temporary: temporaryHitPoints
-									}
-								})}
-						/>
-					</div>
-					<p class="uppercase text-center text-xs">Temporary hit points</p>
-				</div>
+				<HitPoints {hpMax} {currentHp} {tempHp} />
+
 				<div class="flex gap-2">
 					<div class="rounded-xl p-2 w-1/2 border text-sm">
 						<div class="flex">
@@ -294,29 +218,10 @@
 					</div>
 				</div>
 			</div>
+			<Backstory backstory={characterBackground} />
 			<div
-				class="border rounded p-2 flex flex-col justify-center gap-y-2 h-114"
+				class="bg-[url(/sheet/feats-bg.svg)] bg-no-repeat bg-contain bg-center h-100 flex flex-col justify-between p-4 px-8"
 			>
-				{#each bgKeys as bg}
-					<div
-						class="border p-3 pb-1 first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
-					>
-						<textarea
-							name={bg}
-							id={bg}
-							class="text-xs w-full p-0 h-15 border-0 resize-none"
-							bind:value={
-								characterBackground[bg as keyof typeof characterBackground]
-							}
-							onblur={() => saveCurrent({ [bg]: characterBackground[bg] })}
-						></textarea>
-						<p class="uppercase text-[0.6rem] text-center pt-2">
-							{camelCaseToNormalText(bg)}
-						</p>
-					</div>
-				{/each}
-			</div>
-			<div class="border rounded h-115 flex flex-col justify-between p-2">
 				<table class="table-auto">
 					<thead>
 						<tr>
@@ -343,7 +248,9 @@
 					Attacks & spellcasting
 				</p>
 			</div>
-			<div class="border rounded row-span-2 p-2 flex flex-col justify-between">
+			<div
+				class="bg-[url(/sheet/skill-bg.svg)] bg-no-repeat bg-contain bg-center md:w-[320px] row-span-2 p-4 px-16 md:p-5 flex flex-col justify-between w-full h-190"
+			>
 				<div>
 					{#each traits as { name, description }}
 						<p class="text-sm">
@@ -354,7 +261,9 @@
 				</div>
 				<p class="uppercase text-sm font-bold text-center">Features & traits</p>
 			</div>
-			<div class="border rounded h-70 p-2 flex flex-col justify-between">
+			<div
+				class="bg-[url(/sheet/feats-bg.svg)] bg-no-repeat bg-contain bg-center w-full h-80 p-2 px-16 flex flex-col justify-between"
+			>
 				<div>
 					<div>
 						<p class="text-sm">
@@ -371,16 +280,14 @@
 					Other proficiencies & languages
 				</p>
 			</div>
-			<div
-				class="relative border border-white rounded p-2 flex flex-col justify-center gap-y-2 h-70"
-			>
-				<div class="flex h-full items-stretch">
+			<div class="relative flex flex-col justify-center gap-y-2 h-70">
+				<div class="flex h-full">
 					<div
 						class="flex flex-col justify-start items-center space-y-1 mr-2 h-full gap-1"
 					>
 						{#each Object.keys(currencies) as coin}
 							<div
-								class="flex flex-col w-12 pb-2 full-h border first:rounded-t-md last:rounded-b-md flex items-center justify-center"
+								class="flex flex-col w-12 pb-2 full-h border first:rounded-t-md last:rounded-b-md items-center justify-center"
 							>
 								<label for={coin} class="text-xs uppercase">
 									{coin}
