@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { currentName } from '$lib/stores/characters';
+  import { newCharacter } from '$lib/utils';
   export let href: string = '/character-creator/';
 </script>
 
@@ -6,6 +9,7 @@
   {href}
   class="border border-gray-600 cursor-pointer flex flex-col items-center justify-center sm:flex-row p-4 my-4 hover:border-yellow-500 group"
   aria-label="Create a new character"
+  onclick={() => newCharacter()}
 >
   <div class="flex items-center justify-center">
     <div

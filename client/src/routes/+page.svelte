@@ -7,7 +7,8 @@
     elenorSwiftleaf,
     thorgarIronfist,
   } from '$lib/utils/testcharacters';
-  import { loadCharacters, saveTestCharacters } from '$lib/utils';
+  import { saveTestCharacters } from '$lib/utils';
+  import { characterList } from '$lib/stores/characters'
 
   // Example data
   const testCharacters: CharacterSheet[] = [
@@ -15,17 +16,11 @@
     thorgarIronfist,
   ];
 
-  let characters: CharacterSheet[] = [];
-
   onMount(() => {
     if (!localStorage.getItem('characters')) {
       saveTestCharacters(testCharacters);
     }
-
-    characters = loadCharacters();
   });
-
-  console.log(characters);
 </script>
 
 <div class="max-w-8xl m-auto p-2 sm:p-8">
@@ -34,7 +29,7 @@
   </div>
 
   <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
-    {#each characters ?? [] as char (char.characterName)}
+    {#each $characterList ?? [] as char (char.characterName)}
       <CharacterCard
         charName={char.characterName}
         charClass={char.class}

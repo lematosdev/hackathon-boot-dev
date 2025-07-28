@@ -9,15 +9,25 @@
     getPerception,
     getProficiencyBonus,
   } from '$lib/utils';
+  import type { CharacterSheet } from '../../../../types/characterSheet';
+  import { currentName, currentCharacter } from '$lib/stores/characters';
+  import { derived } from 'svelte/store';
 
-  const abilityScores = [
-    { label: 'Strength', value: 10, code: 'str' },
-    { label: 'Dexterity', value: 12, code: 'dex' },
-    { label: 'Constitution', value: 14, code: 'con' },
-    { label: 'Intelligence', value: 13, code: 'int' },
-    { label: 'Wisdom', value: 15, code: 'wis' },
-    { label: 'Charisma', value: 8, code: 'cha' },
-  ];
+  console.log('DEBUG currentName →', $currentName);
+  console.log('DEBUG currentCharacter →', $currentCharacter);
+
+  let character: CharacterSheet = $currentCharacter as CharacterSheet;
+
+  console.log(character)
+
+  let abilityScores = $derived([
+    { label: 'Strength', code: 'str', value: character.attributes.strength     },
+    { label: 'Dexterity', code: 'dex', value: character.attributes.dexterity    },
+    { label: 'Constitution', code: 'cons', value: character.attributes.constitution  },
+    { label: 'Intelligence', code: 'int', value: character.attributes.intelligence },
+    { label: 'Wisdom', code: 'wis', value: character.attributes.wisdom       },
+    { label: 'Charisma', code: 'char', value: character.attributes.charisma     }
+  ]);
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
