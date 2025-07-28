@@ -18,11 +18,11 @@ function createCharacters() {
 
   const { subscribe, set, update } = writable<CharacterSheet[]>(initial);
 
-  subscribe((current) => {
+  const unsubscribe = subscribe((current) => {
     localStorage.setItem("characters", JSON.stringify(current));
   });
 
-  return { subscribe, set, update };
+  return { subscribe, set, update, unsubscribe };
 }
 
 export const characters = createCharacters();
@@ -53,10 +53,7 @@ export const currentCharacter = derived(
     set({
       characterName: "",
       playerName: "",
-      alignment: "",
-      class: "" as VALID_CLASSES,
-      background: "",
-      experiencePoints: 0,
+      aligntment: "",
       age: 0,
       race: "",
       level: 1,
@@ -110,7 +107,7 @@ export function saveCurrent(patch: Partial<CharacterSheet>) {
 
     const updated: CharacterSheet = { ...existing, ...patch };
 
-    const newChars = [...chards];
+    const newChars = [...chars];
     newChars[index] = updated;
     return newChars;
   });
