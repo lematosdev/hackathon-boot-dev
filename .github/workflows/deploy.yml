@@ -37,6 +37,6 @@ jobs:
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "juanpablogo-hackathon-b-68"
+          project: "carlosmatos-hackathon-b-48"
           entrypoint: "index.js"
           root: "client/build"
