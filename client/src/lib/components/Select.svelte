@@ -9,6 +9,8 @@
   $effect(() => {
     selected = select.value;
   });
+
+  const inputName = label.split(' ')[2].toLowerCase();
 </script>
 
 {#if select}
@@ -21,6 +23,7 @@
       <div {...select.getOption(option)} class="divide-y border-white w-full">
         {option[0].toUpperCase() + option.substring(1)}
       </div>
+      <input type="hidden" name={inputName} value={selected} required />
     {/each}
   </div>
 {/if}

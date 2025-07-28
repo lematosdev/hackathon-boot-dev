@@ -21,6 +21,11 @@
     wisdomModifier,
   } from '$lib/stores/character-computed';
   import type { CharacterSheet } from '../../../../types/characterSheet';
+  import type { PageData } from '../$types';
+  import type { ActionData } from './$types';
+
+  let { data, form }: { data: PageData; form: ActionData | null } =
+    $props();
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
@@ -106,9 +111,6 @@
 
   type BGKey = keyof typeof characterBackground;
   const bgKeys: BGKey[] = ['personalityTraits', 'ideals', 'bonds', 'flaws'];
-
-  $inspect(abilityScores);
-
   $effect(() => {
     characterBackground = {
       personalityTraits: $currentCharacter.personalityTraits,
@@ -121,7 +123,7 @@
 
 <div class="flex justify-center character-form lg:mx-64">
   <form method="post" class="md:p-7 text-white w-full">
-    <SheetHeader />
+    <SheetHeader {data} {form} />
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
       <div class="row-span-2 flex justify-center gap-1 md:min-w-min p-1">
         <div
@@ -302,7 +304,7 @@
           </div>
           <div class="flex-1 border border-white rounded-lg py-2">
             <textarea
-              name={equipment}
+              name="equipment"
               id={equipment}
               bind:value={equipment}
               class="w-full h-full text-xs border-0 resize-none text-justify"

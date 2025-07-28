@@ -13,6 +13,8 @@
     VALID_RACES,
   } from '@types';
   import { currentCharacter, saveCurrent } from '$lib/stores/characters';
+  import type { PageData } from '../../../../routes/$types';
+  import type { ActionData } from '../../../../routes/character-creator/$types';
 
   let charName = $state('');
   let selectedClass: ClassesType | '' = $state('');
@@ -21,20 +23,32 @@
   let selectedAlignment: Alignments2024Type | '' = $state('');
   let playerName = $state('');
   let exp = $state(0);
+  let { data, form }: { data: PageData; form: ActionData | null } =
+    $props();
+
+  $effect(() => {
+    if (form?.success && form?.data) {
+      console.log(form.success);
+      console.log(form.data);
+      saveCurrent({
+        characterName: form.data.fullName,
+      });
+    }
+  });
 
   $effect(() => {
     charName = $currentCharacter.characterName || '';
     selectedClass = $currentCharacter.class || '';
     selectedBackground = $currentCharacter.background || '';
-    selectedRace = $currentCharacter.race || '';
-    selectedAlignment = $currentCharacter.alignment || '';
+    selectedRace = $currentCharacter.race.toLowerCase() || '';
+    selectedAlignment = $currentCharacter.alignment.toLowerCase() || '';
     playerName = $currentCharacter.playerName || '';
     exp = $currentCharacter.experiencePoints || 0;
   });
 
   $effect(() => {
     if (selectedClass && selectedClass !== $currentCharacter.class) {
-      saveCurrent({ class: selectedClass });
+      saveCurrent({ class: selectedClass.toLowerCase() });
     }
   });
 
@@ -43,13 +57,13 @@
       selectedBackground &&
       selectedBackground !== $currentCharacter.background
     ) {
-      saveCurrent({ background: selectedBackground });
+      saveCurrent({ background: selectedBackground.toLowerCase() });
     }
   });
 
   $effect(() => {
     if (selectedRace && selectedRace !== $currentCharacter.race) {
-      saveCurrent({ race: selectedRace });
+      saveCurrent({ race: selectedRace.toLowerCase() });
     }
   });
 
@@ -192,15 +206,18 @@
       fill="white"
     />
 
-    <foreignObject x="100" y="75" width="220" height="55">
+    <foreignObject x="100" y="75" width="250" height="55">
       <input
         type="text"
-        name="Character Name"
+        name="charName"
         id="char-name"
         class="bg-transparent border-0 w-full h-full text-4xl"
         bind:value={charName}
         oninput={() => saveCurrent({ characterName: charName })}
       />
+    </foreignObject>
+    <foreignObject x="40" y="90" width="50" height="55">
+      <button class="text-center text-xs">Generate</button>
     </foreignObject>
     <foreignObject x="80" y="135" width="160" height="160">
       <span class="text-xs">CHARACTER NAME</span>
@@ -237,7 +254,7 @@
       <input
         class="border-0 placeholder:text-xs p-0 placeholder:text-white focus:outline-0 focus:shadow-none focus:ring-0"
         type="text"
-        name="Player Name"
+        name="playerName"
         id=""
         placeholder="Type your name"
         bind:value={playerName}

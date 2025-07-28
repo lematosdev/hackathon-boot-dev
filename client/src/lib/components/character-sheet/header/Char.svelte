@@ -14,7 +14,7 @@
     <foreignObject x="100" y="75" width="220" height="55">
       <input
         type="text"
-        name="Character Name"
+        name="charName"
         id="char-name"
         class="bg-transparent border-0 w-full h-full text-4xl"
         bind:value
