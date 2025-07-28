@@ -11,8 +11,9 @@
     }[];
     level: number;
     title: string;
+    class: string;
   }
-  let { list, skills, level, title }: Props = $props();
+  let { list, skills, level, title, class: className }: Props = $props();
 
   const handleRadioChange = (code: string, e: Event) => {
     const value = (e.target as HTMLInputElement).checked;
@@ -34,11 +35,13 @@
   };
 </script>
 
-<div class="border-2 rounded-lg max-w-52 w-full">
+<div
+  class={`w-full flex justify-between flex-col bg-no-repeat bg-cover ${className}`}
+>
   {#each skills as skill}
     <div class="flex gap-x-1 items-center p-1 text-sm">
       <input
-        class="rounded-full size-3 bg-transparent checked:bg-white"
+        class="rounded-full size-3 bg-transparent"
         type="checkbox"
         name={skill.code}
         id={skill.code}
@@ -53,5 +56,5 @@
       {/if}
     </div>
   {/each}
-  <p class="uppercase text-sm text-center pt-3">{title}</p>
+  <p class="uppercase text-sm text-center">{title}</p>
 </div>

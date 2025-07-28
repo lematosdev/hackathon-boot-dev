@@ -1,6 +1,7 @@
 import { GoogleGenAI } from 'npm:@google/genai';
 import dnd, {
   AbilitiesType,
+  Alignments2024Type,
   BackgroundTypes,
   ClassesType,
   RacesType,
@@ -103,10 +104,15 @@ export async function generateBackstory(character: {
   return cleanResponse;
 }
 
-export async function generateCharacterName({ race, gender = 'neutral' }: {
-  race: RacesType;
-  gender: 'male' | 'female' | 'neutral';
-}) {
+export async function generateCharacterName(
+  { race, class: charClass, background, alignment, gender = 'neutral' }: {
+    race: RacesType;
+    class: ClassesType;
+    background: BackgroundTypes;
+    alignment: Alignments2024Type;
+    gender: 'male' | 'female' | 'neutral';
+  },
+) {
   const schema = {
     fullName: 'string',
     alias: 'string',
@@ -118,6 +124,9 @@ export async function generateCharacterName({ race, gender = 'neutral' }: {
   Genera nombre y apellido para este personaje de D&D 5e:
 
   RAZA DEL PERSONAJE: ${race}
+  CLASE DEL PERSONAJE: ${charClass}
+  BACKGROUND DEL PERSONAJE: ${background}
+  ALIGNMENT DEL PERSONAJE: ${alignment}
   GENERO DEL PERSONAJE: ${gender}
 
   Sugiere un apodo y el significado del nombre

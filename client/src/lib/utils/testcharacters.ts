@@ -4,7 +4,7 @@ import type { CharacterSheet } from '@types';
 export const elenorSwiftleaf: CharacterSheet = {
   characterName: 'Elenor Swiftleaf',
   playerName: 'Alice',
-  alignment: 'Neutral Good',
+  alignment: 'neutral-good',
   age: 120,
   race: 'elf',
   class: 'ranger',
@@ -86,7 +86,7 @@ export const elenorSwiftleaf: CharacterSheet = {
 export const thorgarIronfist: CharacterSheet = {
   characterName: 'Thorgar Ironfist',
   playerName: 'Bob',
-  alignment: 'Lawful Neutral',
+  alignment: 'lawful-neutral',
   age: 80,
   race: 'dwarf',
   class: 'fighter',

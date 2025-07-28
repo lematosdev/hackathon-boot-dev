@@ -16,7 +16,8 @@
 		"include": ["server/", "client/src/"],
 		"rules": {
 			"tags": ["recommended"],
-			"include": ["ban-untagged-todo"]
+			"include": ["ban-untagged-todo"],
+			"exclude": ["no-empty-interface"]
 		}
 	},
 	"fmt": {

@@ -45,20 +45,12 @@ export const wisdomModifier = derived(
   },
 );
 
-export const battleSkills = derived(
-  [currentCharacter, abilityScores],
-  ([c, scores]) => {
-    const list = Array.isArray(scores) ? scores : [];
-    const init = getAbilityModifier(
-      list.find((a) => a.code === 'dex')?.value || 0,
-    );
-    return [
-      { label: 'Armor class', value: c.armorClass || 0 },
-      { label: 'Initiative', value: init },
-      { label: 'Speed', value: c.speed, unit: 'feet' },
-    ];
-  },
-);
+export const armorClass = derived(currentCharacter, (c) => c.armorClass || 0);
+export const initiative = derived(currentCharacter, (c) =>
+  getAbilityModifier(
+    c.attributes.dexterity,
+  ));
+export const speed = derived(currentCharacter, (c) => c.speed);
 
 export const proficiencies = derived(
   currentCharacter,

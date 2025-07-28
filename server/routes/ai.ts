@@ -3,6 +3,7 @@ import { zValidator } from '@utils';
 import {
   AbilitiesType,
   VALID_ABILITIES_2014,
+  VALID_ALIGNMENTS_2024,
   VALID_BACKGROUNDS,
   VALID_CLASSES,
   VALID_RACES,
@@ -26,6 +27,9 @@ const backStorySchema = z.object({
 
 const characterNameGeneratorSchema = z.object({
   race: z.enum(VALID_RACES),
+  background: z.enum(VALID_BACKGROUNDS),
+  alignment: z.enum(VALID_ALIGNMENTS_2024),
+  class: z.enum(VALID_CLASSES),
   gender: z.enum(['male', 'female', 'neutral']).optional(),
 });
 
@@ -37,9 +41,16 @@ const ai = new Hono()
       characterNameGeneratorSchema,
     ),
     async (c) => {
-      const { race, gender } = c.req.valid('query');
+      const { race, gender, class: charClass, alignment, background } = c.req
+        .valid('query');
       try {
-        const result = await generateCharacterName({ race, gender });
+        const result = await generateCharacterName({
+          race,
+          gender,
+          class: charClass,
+          alignment,
+          background,
+        });
         const parsedResult = JSON.parse(result);
         return c.json(parsedResult, 200);
       } catch (error) {

@@ -9,26 +9,26 @@
   let { label, value }: Props = $props();
 </script>
 
-<div class="w-full h-34 border-3">
-  <p class="uppercase text-center text-sm font-bold">{label}</p>
-  <p class="grid place-items-center h-22">
-    <span class="text-4xl font-">{getPlusSign(value)}{
+<div
+  class="w-full h-20 md:h-36 bg-[url(/sheet/abilities-bg.svg)] bg-no-repeat bg-center bg-contain text-[8px] md:text-xs pt-2 md:pt-5"
+>
+  <p class="uppercase text-center font-semibold">{label}</p>
+  <p class="grid place-items-center relative top-1 md:top-3 text-sm">
+    <span class="md:text-3xl">{getPlusSign(value)}{
       getAbilityModifier(value)
     }</span>
   </p>
-  <div class="w-full flex justify-center">
-    <input
-      type="text"
-      class="rounded-full w-14 h-8 text-center border-3 bg-white! text-black!"
-      bind:value
-      oninput={() =>
-        saveCurrent({
-          attributes: {
-            ...$currentCharacter.attributes,
-            [label.toLowerCase()]: Number(value) || 0,
-          },
-        })}
-      aria-label="{label} score"
-    />
-  </div>
+  <input
+    type="text"
+    class="border-0 w-full h-8 text-center text-white focus:ring-0 relative top-2.5 md:top-6 text-xs md:text-2xl"
+    bind:value
+    oninput={() =>
+      saveCurrent({
+        attributes: {
+          ...$currentCharacter.attributes,
+          [label.toLowerCase()]: Number(value) || 0,
+        },
+      })}
+    aria-label="{label} score"
+  />
 </div>

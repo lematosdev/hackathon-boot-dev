@@ -2,11 +2,18 @@
 // for information about these interfaces
 declare global {
   namespace App {
-    // interface Error {}
-    // interface Locals {}
-    // interface PageData {}
-    // interface PageState {}
-    // interface Platform {}
+    interface PageData {}
+    interface ActionData {
+      success: boolean;
+      error?: string;
+      data?: unknown;
+      originalParams?: {
+        race?: string;
+        class?: string;
+        background?: string;
+        alignment?: string;
+      };
+    }
   }
 }
 

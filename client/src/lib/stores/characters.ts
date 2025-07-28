@@ -39,7 +39,7 @@ export const characterList = derived(
   ($characters): CharacterListItem[] =>
     $characters.map((c): CharacterListItem => ({
       characterName: c.characterName,
-      class: c.class, // assuming your sheet has a `class` field
+      class: c.class,
       level: c.level,
     })),
 );
@@ -55,6 +55,9 @@ export const currentCharacter = derived(
         set(found);
         return;
       }
+    } else {
+      set(blankCharacter);
+      return;
     }
   },
   {} as CharacterSheet,

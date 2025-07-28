@@ -10,7 +10,6 @@
   import { saveTestCharacters } from '$lib/utils';
   import { characterList } from '$lib/stores/characters';
 
-  // Example data
   const testCharacters: CharacterSheet[] = [
     elenorSwiftleaf,
     thorgarIronfist,

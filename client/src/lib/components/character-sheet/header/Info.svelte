@@ -60,7 +60,7 @@
       <input
         class="border-0 placeholder:text-xs p-0 placeholder:text-white focus:outline-0 focus:shadow-none focus:ring-0"
         type="text"
-        name="Player Name"
+        name="playerName"
         id=""
         placeholder="Type your name"
         bind:value={playerName}
