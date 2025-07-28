@@ -1,5 +1,5 @@
-import { derived, get, writable } from 'svelte/store';
-import type { CharacterSheet, VALID_CLASSES } from '@types';
+import { derived, get, writable } from "svelte/store";
+import type { CharacterSheet, VALID_CLASSES } from "@types";
 
 export interface CharacterListItem {
   characterName: string;
@@ -10,7 +10,7 @@ export interface CharacterListItem {
 function createCharacters() {
   let initial: CharacterSheet[] = [];
   try {
-    const raw = localStorage.getItem('characters');
+    const raw = localStorage.getItem("characters");
     if (raw) initial = JSON.parse(raw);
   } catch (error) {
     console.log(error);
@@ -19,7 +19,7 @@ function createCharacters() {
   const { subscribe, set, update } = writable<CharacterSheet[]>(initial);
 
   subscribe((current) => {
-    localStorage.setItem('characters', JSON.stringify(current));
+    localStorage.setItem("characters", JSON.stringify(current));
   });
 
   return { subscribe, set, update };
@@ -51,14 +51,14 @@ export const currentCharacter = derived(
     }
 
     set({
-      characterName: '',
-      playerName: '',
-      alignment: '',
-      class: '' as VALID_CLASSES,
-      background: '',
+      characterName: "",
+      playerName: "",
+      alignment: "",
+      class: "" as VALID_CLASSES,
+      background: "",
       experiencePoints: 0,
       age: 0,
-      race: '',
+      race: "",
       level: 1,
       skills: [],
       inventory: [],
@@ -83,10 +83,10 @@ export const currentCharacter = derived(
       featuresAndTraits: [],
       proficiencies: [],
       languages: [],
-      personalityTraits: '',
-      ideals: '',
-      bonds: '',
-      flaws: '',
+      personalityTraits: "",
+      ideals: "",
+      bonds: "",
+      flaws: "",
     }) as CharacterSheet;
   },
   {} as CharacterSheet,
@@ -95,7 +95,7 @@ export const currentCharacter = derived(
 export function saveCurrent(patch: Partial<CharacterSheet>) {
   const name = get(currentName);
   if (!name) {
-    console.error('No currentName set!');
+    console.error("No currentName set!");
     return;
   }
 
