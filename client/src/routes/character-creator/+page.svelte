@@ -24,8 +24,7 @@
   import type { PageData } from '../$types';
   import type { ActionData } from './$types';
 
-  let { data, form }: { data: PageData; form: ActionData | null } =
-    $props();
+  let { data, form }: { data: PageData; form: ActionData | null } = $props();
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
@@ -74,9 +73,7 @@
         s.name.toLowerCase().replace(/\s+/g, '-')
       );
     saveThrowProfs = $currentCharacter.savingThrows
-      .filter((st: CharacterSheet['savingThrows'][number]) =>
-        st.proficiency
-      )
+      .filter((st: CharacterSheet['savingThrows'][number]) => st.proficiency)
       .map((st: CharacterSheet['savingThrows'][number]) =>
         st.abilityScore.substring(0, 3).toLowerCase()
       );
@@ -96,7 +93,7 @@
   ];
 
   let equipment = $state(
-    'Chain mail*, battleaxe, 3 javelins, backpack\n\n* While wearing this armor, you have disadvantage on Dexterity (Stealth) cheks',
+    'Chain mail*, battleaxe, 3 javelins, backpack\n\n* While wearing this armor, you have disadvantage on Dexterity (Stealth) cheks'
   );
 
   let currencies = $state({
@@ -148,11 +145,9 @@
           <Skills
             {level}
             list={skillsWithProficiencies}
-            skills={skills.map((s) => ({
+            skills={skills.map(s => ({
               ...s,
-              value:
-                $abilityScores.find((a) => a.code === s.ability)
-                  ?.value || 0,
+              value: $abilityScores.find(a => a.code === s.ability)?.value || 0,
             }))}
             title="Skills"
             class="bg-[url(/sheet/skill-bg.svg)] h-[611px] p-3.5"
@@ -221,7 +216,7 @@
       </div>
       <Backstory backstory={characterBackground} />
       <div
-        class="bg-[url(/sheet/feats-bg.svg)] bg-no-repeat bg-contain bg-center h-100 flex flex-col justify-between p-4 px-8"
+        class="bg-[url(/sheet/feats-bg.svg)] bg-no-repeat bg-contain bg-center h-100 flex flex-col justify-between p-4 px-8 items-center"
       >
         <table class="table-auto">
           <thead>
@@ -263,7 +258,7 @@
         <p class="uppercase text-sm font-bold text-center">Features & traits</p>
       </div>
       <div
-        class="bg-[url(/sheet/feats-bg.svg)] bg-no-repeat bg-contain bg-center w-full h-80 p-2 px-16 flex flex-col justify-between"
+        class="bg-[url(/sheet/feats-bg.svg)] bg-no-repeat bg-contain bg-center h-80 p-2 px-16 flex flex-col justify-between w-fit"
       >
         <div>
           <div>
