@@ -6,8 +6,8 @@ export const elenorSwiftleaf: CharacterSheet = {
   playerName: 'Alice',
   alignment: 'Neutral Good',
   age: 120,
-  race: 'Elf',
-  class: 'Ranger',
+  race: 'elf',
+  class: 'ranger',
   level: 5,
   skills: [
     {
@@ -88,8 +88,8 @@ export const thorgarIronfist: CharacterSheet = {
   playerName: 'Bob',
   alignment: 'Lawful Neutral',
   age: 80,
-  race: 'Dwarf',
-  class: 'Fighter',
+  race: 'dwarf',
+  class: 'fighter',
   level: 5,
   skills: [
     {

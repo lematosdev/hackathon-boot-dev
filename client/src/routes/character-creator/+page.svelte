@@ -5,19 +5,17 @@
   import Skills from '$lib/components/character-sheet/Skills.svelte';
   import {
     camelCaseToNormalText,
-    getAbilityModifier,
     getPerception,
     getProficiencyBonus,
   } from '$lib/utils';
-
-  const abilityScores = [
-    { label: 'Strength', value: 10, code: 'str' },
-    { label: 'Dexterity', value: 12, code: 'dex' },
-    { label: 'Constitution', value: 14, code: 'con' },
-    { label: 'Intelligence', value: 13, code: 'int' },
-    { label: 'Wisdom', value: 15, code: 'wis' },
-    { label: 'Charisma', value: 8, code: 'cha' },
-  ];
+  import { currentCharacter } from '$lib/stores/characters';
+  import {
+    abilityScores,
+    battleSkills,
+    languages,
+    proficiencies,
+    wisdomModifier,
+  } from '$lib/stores/character-computed';
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
@@ -40,10 +38,6 @@
     { label: 'Survival', ability: 'wis', code: 'survival' },
   ];
 
-  const wisdomModifier = getAbilityModifier(
-    abilityScores.find((a) => a.code === 'wis')?.value ?? 0,
-  );
-
   const mainInputs = [
     { label: 'Class & Level', code: 'class-level', value: '' },
     { label: 'Background', code: 'background', value: '' },
@@ -53,34 +47,15 @@
     { label: 'Experience Points', code: 'experience-points', value: '' },
   ];
 
-  const level = 3;
-  const hidDice = 8;
+  const hidDice = $currentCharacter.hitDice.die;
+
+  const level = $currentCharacter.level;
 
   let skillsWithProficiencies: string[] = $state([]);
-
-  const initiative = getAbilityModifier(
-    abilityScores.find((a) => a.code === 'dex')?.value || 0,
-  );
-  const battleSkills = [
-    { label: 'Armor class', value: 17 },
-    { label: 'Initiative', value: initiative },
-    { label: 'Speed', value: 30, unit: 'feet' },
-  ];
 
   let hitPointMax = $state(0);
   let currentHitPoints = $state(0);
   let temporaryHitPoints = $state(0);
-
-  let characterBackground = $state({
-    personalityTraits:
-      "My flattery makes those I talk to feel wonderful and important. Also, I don't like to get dirty, and I won't be caught dead in unsuitable accommodations.",
-    ideals:
-      "Responsibility. It's the duty of a noble to protect the common people, not bully them.",
-    bonds:
-      "My greataxe is a family heirloom, and it's by far my most precious possession",
-    flaws:
-      'I have a hard time resisting the allure of wealth, especially gold. Wealth can help me restore my legacy.',
-  });
 
   const weapons = [
     {
@@ -106,27 +81,15 @@
     gp: 40,
     pp: 0,
   });
-  const traits = [
-    {
-      name: 'Second Wind',
-      description:
-        'You have a limited well of stamina you can draw on to protect yourself from harm. You can use a bonus action to regain hit points equal to 1d10 + your fighter level.',
-    },
-    {
-      name: 'Fighting Style (Defense)',
-      description:
-        'While you are wearing armor, you gain a +1 bonus to ac. This bonus is already included in your ac.',
-    },
-  ];
 
-  const proficiencies = [
-    'all armor',
-    'shields',
-    'simple weapons',
-    'martial weapons',
-  ];
+  const traits = $currentCharacter.featuresAndTraits;
 
-  const languages = ['common', 'dwarvish', 'draconic', 'demonic'];
+  const characterBackground = {
+    personalityTraits: $currentCharacter.personalityTraits,
+    ideals: $currentCharacter.ideals,
+    bonds: $currentCharacter.bonds,
+    flaws: $currentCharacter.flaws,
+  };
 </script>
 
 <div class="flex justify-center character-form">
@@ -135,7 +98,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div class="border rounded row-span-2 flex min-w-fit">
         <div class="h-full w-32 p-3 flex flex-col gap-y-5">
-          {#each abilityScores as score}
+          {#each $abilityScores as score}
             <AbilityScore label={score.label} value={score.value} />
           {/each}
         </div>
@@ -155,7 +118,7 @@
           <Skills
             {level}
             list={skillsWithProficiencies}
-            skills={abilityScores}
+            skills={$abilityScores}
             title="Saving Throws"
           />
           <Skills
@@ -163,8 +126,9 @@
             list={skillsWithProficiencies}
             skills={skills.map((s) => ({
               ...s,
-              value: abilityScores.find((a) => a.code === s.ability)
-                ?.value || 0,
+              value:
+                $abilityScores.find((a) => a.code === s.ability)
+                  ?.value || 0,
             }))}
             title="Skills"
           />
@@ -172,7 +136,7 @@
             <span
               class="w-20 h-14 rounded-full text-center border-4 border-white flex items-center justify-center"
             >
-              {getPerception(wisdomModifier, level)}
+              {getPerception($wisdomModifier, level)}
             </span>
             <span
               class="content-center text-center px-3 border-4 border-l-0 rounded-r-xl rounded-l-md w-full h-13 relative right-3.5 text-sm"
@@ -186,7 +150,7 @@
         class="border rounded p-2 flex flex-col justify-center gap-y-2 h-114"
       >
         <div class="flex gap-2">
-          {#each battleSkills as skill}
+          {#each $battleSkills as skill}
             <div
               class="border rounded flex-1 flex flex-col justify-between p-2"
             >
@@ -347,11 +311,11 @@
           <div>
             <p class="text-sm">
               <span class="font-bold italic pl-4">Proficiencies.</span>
-              {proficiencies.join(', ')}
+              {$proficiencies.join(', ')}
             </p>
             <p class="text-sm capitalize">
               <span class="font-bold italic pl-4">Languages.</span>
-              {languages.join(', ')}
+              {$languages.join(', ')}
             </p>
           </div>
         </div>

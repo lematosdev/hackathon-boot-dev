@@ -1,3 +1,7 @@
+import { goto } from '$app/navigation';
+import { currentName } from '$lib/stores/characters';
+import type { CharacterSheet } from '@types';
+
 export function getAbilityModifier(score: number) {
   return Math.floor((score - 10) / 2);
 }
@@ -37,4 +41,14 @@ export function loadCharacters(): CharacterSheet[] {
 
 export function camelCaseToNormalText(input: string): string {
   return input.replace(/([a-z])([A-Z])/g, '$1 $2');
+}
+
+export function newCharacter() {
+  currentName.set(null);
+  goto('/character-creator');
+}
+
+export function loadCharacter(name: string) {
+  currentName.set(name);
+  goto('/character-creator');
 }
