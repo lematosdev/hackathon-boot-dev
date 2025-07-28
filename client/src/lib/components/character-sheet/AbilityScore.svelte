@@ -25,7 +25,7 @@
         saveCurrent({
           attributes: {
             ...$currentCharacter.attributes,
-            [label.toLowerCase()]: Number(value),
+            [label.toLowerCase()]: Number(value) || 0,
           },
         })}
       aria-label="{label} score"

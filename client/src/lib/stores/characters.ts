@@ -1,7 +1,7 @@
-import { goto } from "$app/navigation";
-import { derived, get, writable } from "svelte/store";
-import type { CharacterSheet, VALID_CLASSES } from "@types";
-import { blankCharacter } from "$lib/constants/blankcharacter";
+import { goto } from '$app/navigation';
+import { derived, get, writable } from 'svelte/store';
+import type { CharacterSheet, VALID_CLASSES } from '@types';
+import { blankCharacter } from '$lib/constants/blankcharacter';
 
 export interface CharacterListItem {
   characterName: string;
@@ -12,7 +12,7 @@ export interface CharacterListItem {
 function createCharacters() {
   let initial: CharacterSheet[] = [];
   try {
-    const raw = localStorage.getItem("characters");
+    const raw = localStorage.getItem('characters');
     if (raw) initial = JSON.parse(raw);
   } catch (error) {
     console.log(error);
@@ -21,12 +21,12 @@ function createCharacters() {
   const { subscribe, set, update } = writable<CharacterSheet[]>(initial);
 
   const unsubscribe = subscribe((current) => {
-    localStorage.setItem("characters", JSON.stringify(current));
+    localStorage.setItem('characters', JSON.stringify(current));
   });
 
   function saveToLocalStorage() {
     const all = get(characters);
-    localStorage.setItem("characters", JSON.stringify(all));
+    localStorage.setItem('characters', JSON.stringify(all));
   }
 
   return { subscribe, set, update, unsubscribe, saveToLocalStorage };
@@ -63,7 +63,7 @@ export const currentCharacter = derived(
 export function saveCurrent(patch: Partial<CharacterSheet>) {
   const name = get(currentName);
   if (!name) {
-    console.error("No character selected!");
+    console.error('No character selected!');
     return;
   }
 
@@ -89,7 +89,7 @@ export function saveCurrent(patch: Partial<CharacterSheet>) {
 }
 
 export function createNewCharacter() {
-  const placeholder = "new_character";
+  const placeholder = `new_character_${Date.now()}`;
 
   const fresh = { ...blankCharacter, characterName: placeholder };
 
@@ -97,7 +97,7 @@ export function createNewCharacter() {
 
   currentName.set(placeholder);
 
-  goto("/character-creator");
+  goto('/character-creator');
 }
 
 export function saveCharacters() {

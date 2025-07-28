@@ -14,6 +14,7 @@ export interface CharacterSheet {
   race: Races2014;
   class: Classes2014;
   level: number;
+  exp: number;
   skills: {
     name: Skills2014;
     proficiency: boolean;

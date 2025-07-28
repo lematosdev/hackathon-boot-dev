@@ -61,8 +61,8 @@
 
   $effect(() => {
     if (
-      selectedRace &&
-      selectedRace !== $currentCharacter.race
+      selectedAlignment &&
+      selectedAlignment !== $currentCharacter.alignment
     ) {
       saveCurrent({ alingment: selectedAlignment });
     }
