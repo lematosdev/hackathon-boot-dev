@@ -5,51 +5,21 @@
   import Skills from '$lib/components/character-sheet/Skills.svelte';
   import {
     camelCaseToNormalText,
-    getAbilityModifier,
     getPerception,
     getProficiencyBonus,
   } from '$lib/utils';
   import type { CharacterSheet } from '../../../../types/characterSheet';
   import { currentCharacter, currentName } from '$lib/stores/characters';
+  import {
+    abilityScores,
+    battleSkills,
+    wisdomModifier,
+  } from '$lib/stores/character-computed';
 
   console.log('DEBUG currentName →', $currentName);
   console.log('DEBUG currentCharacter →', $currentCharacter);
 
   let character: CharacterSheet = $currentCharacter as CharacterSheet;
-
-  let abilityScores: { label: string; code: string; value: number }[] =
-    $state([]);
-
-  $effect(() => {
-    abilityScores = [
-      {
-        label: 'Strength',
-        code: 'str',
-        value: character.attributes.strength,
-      },
-      {
-        label: 'Dexterity',
-        code: 'dex',
-        value: character.attributes.dexterity,
-      },
-      {
-        label: 'Constitution',
-        code: 'cons',
-        value: character.attributes.constitution,
-      },
-      {
-        label: 'Intelligence',
-        code: 'int',
-        value: character.attributes.intelligence,
-      },
-      { label: 'Wisdom', code: 'wis', value: character.attributes.wisdom },
-      {
-        label: 'Charisma',
-        code: 'char',
-        value: character.attributes.charisma,
-      },
-    ];
-  });
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
@@ -72,19 +42,6 @@
     { label: 'Survival', ability: 'wis', code: 'survival' },
   ];
 
-  let wisdomModifier = $state(0);
-  let initiative = $state(0);
-  let level = $state(character.level);
-
-  $effect(() => {
-    wisdomModifier = getAbilityModifier(
-      abilityScores.find((a) => a.code === 'wis')?.value ?? 0,
-    );
-    initiative = getAbilityModifier(
-      abilityScores.find((a) => a.code === 'dex')?.value || 0,
-    );
-  });
-
   const mainInputs = [
     { label: 'Class & Level', code: 'class-level', value: '' },
     { label: 'Background', code: 'background', value: '' },
@@ -96,13 +53,9 @@
 
   const hidDice = character.hitDice.die;
 
-  let skillsWithProficiencies: string[] = $state([]);
+  const level = character.level;
 
-  const battleSkills = [
-    { label: 'Armor class', value: 17 },
-    { label: 'Initiative', value: initiative },
-    { label: 'Speed', value: 30, unit: 'feet' },
-  ];
+  let skillsWithProficiencies: string[] = $state([]);
 
   let hitPointMax = $state(0);
   let currentHitPoints = $state(0);
@@ -153,7 +106,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div class="border rounded row-span-2 flex min-w-fit">
         <div class="h-full w-32 p-3 flex flex-col gap-y-5">
-          {#each abilityScores as score}
+          {#each $abilityScores as score}
             <AbilityScore label={score.label} value={score.value} />
           {/each}
         </div>
@@ -173,7 +126,7 @@
           <Skills
             {level}
             list={skillsWithProficiencies}
-            skills={abilityScores}
+            skills={$abilityScores}
             title="Saving Throws"
           />
           <Skills
@@ -181,8 +134,9 @@
             list={skillsWithProficiencies}
             skills={skills.map((s) => ({
               ...s,
-              value: abilityScores.find((a) => a.code === s.ability)
-                ?.value || 0,
+              value:
+                $abilityScores.find((a) => a.code === s.ability)
+                  ?.value || 0,
             }))}
             title="Skills"
           />
@@ -190,7 +144,7 @@
             <span
               class="w-20 h-14 rounded-full text-center border-4 border-white flex items-center justify-center"
             >
-              {getPerception(wisdomModifier, level)}
+              {getPerception($wisdomModifier, level)}
             </span>
             <span
               class="content-center text-center px-3 border-4 border-l-0 rounded-r-xl rounded-l-md w-full h-13 relative right-3.5 text-sm"
@@ -204,7 +158,7 @@
         class="border rounded p-2 flex flex-col justify-center gap-y-2 h-114"
       >
         <div class="flex gap-2">
-          {#each battleSkills as skill}
+          {#each $battleSkills as skill}
             <div
               class="border rounded flex-1 flex flex-col justify-between p-2"
             >
