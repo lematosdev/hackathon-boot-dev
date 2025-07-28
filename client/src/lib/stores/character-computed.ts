@@ -59,3 +59,13 @@ export const battleSkills = derived(
     ];
   },
 );
+
+export const proficiencies = derived(
+  currentCharacter,
+  (c): string[] => c.proficiencies.map((p) => p.name),
+);
+
+export const languages = derived(
+  currentCharacter,
+  (c): string[] => c.languages.map((l) => l.name),
+);

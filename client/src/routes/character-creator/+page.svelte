@@ -8,18 +8,14 @@
     getPerception,
     getProficiencyBonus,
   } from '$lib/utils';
-  import type { CharacterSheet } from '../../../../types/characterSheet';
-  import { currentCharacter, currentName } from '$lib/stores/characters';
+  import { currentCharacter } from '$lib/stores/characters';
   import {
     abilityScores,
     battleSkills,
+    languages,
+    proficiencies,
     wisdomModifier,
   } from '$lib/stores/character-computed';
-
-  console.log('DEBUG currentName →', $currentName);
-  console.log('DEBUG currentCharacter →', $currentCharacter);
-
-  let character: CharacterSheet = $currentCharacter as CharacterSheet;
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
@@ -51,22 +47,15 @@
     { label: 'Experience Points', code: 'experience-points', value: '' },
   ];
 
-  const hidDice = character.hitDice.die;
+  const hidDice = $currentCharacter.hitDice.die;
 
-  const level = character.level;
+  const level = $currentCharacter.level;
 
   let skillsWithProficiencies: string[] = $state([]);
 
   let hitPointMax = $state(0);
   let currentHitPoints = $state(0);
   let temporaryHitPoints = $state(0);
-
-  let characterBackground = $state({
-    personalityTraits: character.personalityTraits,
-    ideals: character.ideals,
-    bonds: character.bonds,
-    flaws: character.flaws,
-  });
 
   const weapons = [
     {
@@ -93,11 +82,14 @@
     pp: 0,
   });
 
-  const traits = $state(character.featuresAndTraits);
-  const proficiencies = $state(
-    character.proficiencies.map((prof) => prof.name),
-  );
-  const languages = $state(character.languages.map((lang) => lang.name));
+  const traits = $currentCharacter.featuresAndTraits;
+
+  const characterBackground = {
+    personalityTraits: $currentCharacter.personalityTraits,
+    ideals: $currentCharacter.ideals,
+    bonds: $currentCharacter.bonds,
+    flaws: $currentCharacter.flaws,
+  };
 </script>
 
 <div class="flex justify-center character-form">
@@ -319,11 +311,11 @@
           <div>
             <p class="text-sm">
               <span class="font-bold italic pl-4">Proficiencies.</span>
-              {proficiencies.join(', ')}
+              {$proficiencies.join(', ')}
             </p>
             <p class="text-sm capitalize">
               <span class="font-bold italic pl-4">Languages.</span>
-              {languages.join(', ')}
+              {$languages.join(', ')}
             </p>
           </div>
         </div>

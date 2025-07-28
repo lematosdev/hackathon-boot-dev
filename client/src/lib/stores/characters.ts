@@ -53,7 +53,10 @@ export const currentCharacter = derived(
     set({
       characterName: '',
       playerName: '',
-      aligntment: '',
+      alignment: '',
+      class: '' as VALID_CLASSES,
+      background: '',
+      experiencePoints: 0,
       age: 0,
       race: '',
       level: 1,
@@ -63,6 +66,7 @@ export const currentCharacter = derived(
         strength: 0,
         dexterity: 0,
         intelligence: 0,
+        constitution: 0,
         charisma: 0,
         wisdom: 0,
       },
@@ -74,11 +78,15 @@ export const currentCharacter = derived(
         maximum: 0,
         temporary: 0,
       },
-      hitDice: {},
+      hitDice: { die: 6, count: 1 },
       savingThrows: [],
       featuresAndTraits: [],
       proficiencies: [],
       languages: [],
+      personalityTraits: '',
+      ideals: '',
+      bonds: '',
+      flaws: '',
     }) as CharacterSheet;
   },
   {} as CharacterSheet,
@@ -91,16 +99,19 @@ export function saveCurrent(patch: Partial<CharacterSheet>) {
     return;
   }
 
-  characters.update((map) => {
-    const existing = map[name];
-    if (!existing) {
-      console.error(`Character "${name}" not found in store.`);
-      return map;
+  characters.update((chars) => {
+    const index = chars.findIndex((c) => c.characterName === name);
+    if (index === -1) {
+      console.error(`Character ${name} not found in store.`);
+      return chars;
     }
 
-    // Merge top-level fields
+    const existing = chars[index];
+
     const updated: CharacterSheet = { ...existing, ...patch };
 
-    return { ...map, [name]: updated };
+    const newChars = [...chards];
+    newChars[index] = updated;
+    return newChars;
   });
 }

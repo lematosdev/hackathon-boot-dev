@@ -13,10 +13,6 @@
     VALID_RACES,
   } from '@types';
 
-  import { currentCharacter } from '$lib/stores/characters';
-
-  let character = $currentCharacter;
-
   let charName = $state('');
   let selectedClass: ClassesType | '' = $state('');
   let selectedBackground: BackgroundTypes | '' = $state('');
@@ -161,7 +157,7 @@
         name="Character Name"
         id="char-name"
         class="bg-transparent border-0 w-full h-full text-4xl"
-        bind:value={character.characterName}
+        bind:value={charName}
       />
     </foreignObject>
     <foreignObject x="80" y="135" width="160" height="160">
@@ -180,7 +176,7 @@
     <foreignObject x="465" y="70" width="220" height="55">
       <Select
         options={VALID_CLASSES}
-        bind:selected={character.class}
+        bind:selected={selectedClass}
         label="Select your Class"
       />
     </foreignObject>
@@ -218,7 +214,7 @@
     <foreignObject x="465" y="110" width="220" height="55">
       <Select
         options={VALID_RACES}
-        bind:selected={character.race}
+        bind:selected={selectedRace}
         label="Select your Race"
       />
     </foreignObject>
