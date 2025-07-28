@@ -15,7 +15,6 @@
     imageUrl = '',
     href = '/character-creator',
   }: Props = $props();
-
 </script>
 
 <a
