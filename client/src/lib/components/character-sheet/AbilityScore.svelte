@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { currentCharacter, saveCurrent } from '$lib/stores/characters';
   import { getAbilityModifier, getPlusSign } from '$lib/utils';
 
   interface Props {
@@ -20,6 +21,13 @@
       type="text"
       class="rounded-full w-14 h-8 text-center border-3 bg-white! text-black!"
       bind:value
+      oninput={() =>
+        saveCurrent({
+          attributes: {
+            ...$currentCharacter.attributes,
+            [label.toLowerCase()]: Number(value),
+          },
+        })}
       aria-label="{label} score"
     />
   </div>

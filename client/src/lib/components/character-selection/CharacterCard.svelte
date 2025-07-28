@@ -44,8 +44,8 @@
   </div>
 
   <div class="flex-1">
-    <h2 class="text-2xl mb-2 font-bold">{charName.toUpperCase()}</h2>
+    <h2 class="text-2xl mb-2 font-bold uppercase">{charName}</h2>
 
-    <p class="sm:block">{charClass} Level: {level}</p>
+    <p class="sm:block uppercase">{charClass} Level: {level}</p>
   </div>
 </a>

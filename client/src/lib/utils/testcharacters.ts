@@ -13,7 +13,7 @@ export const elenorSwiftleaf: CharacterSheet = {
     {
       name: 'Stealth',
       proficiency: true,
-      abilityScore: 'Dexterity',
+      abilityScore: 'dexterity',
       score: 8,
     },
     {
