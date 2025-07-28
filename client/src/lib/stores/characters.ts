@@ -1,5 +1,7 @@
+import { goto } from '$app/navigation';
 import { derived, get, writable } from 'svelte/store';
 import type { CharacterSheet, VALID_CLASSES } from '@types';
+import { blankCharacter } from '$lib/constants/blankcharacter';
 
 export interface CharacterListItem {
   characterName: string;
@@ -18,11 +20,16 @@ function createCharacters() {
 
   const { subscribe, set, update } = writable<CharacterSheet[]>(initial);
 
-  subscribe((current) => {
+  const unsubscribe = subscribe((current) => {
     localStorage.setItem('characters', JSON.stringify(current));
   });
 
-  return { subscribe, set, update };
+  function saveToLocalStorage() {
+    const all = get(characters);
+    localStorage.setItem('characters', JSON.stringify(all));
+  }
+
+  return { subscribe, set, update, unsubscribe, saveToLocalStorage };
 }
 
 export const characters = createCharacters();
@@ -49,45 +56,6 @@ export const currentCharacter = derived(
         return;
       }
     }
-
-    set({
-      characterName: '',
-      playerName: '',
-      alignment: '',
-      class: '' as VALID_CLASSES,
-      background: '',
-      experiencePoints: 0,
-      age: 0,
-      race: '',
-      level: 1,
-      skills: [],
-      inventory: [],
-      attributes: {
-        strength: 0,
-        dexterity: 0,
-        intelligence: 0,
-        constitution: 0,
-        charisma: 0,
-        wisdom: 0,
-      },
-      armorClass: 0,
-      initiative: 0,
-      speed: 0,
-      hitPoints: {
-        current: 0,
-        maximum: 0,
-        temporary: 0,
-      },
-      hitDice: { die: 6, count: 1 },
-      savingThrows: [],
-      featuresAndTraits: [],
-      proficiencies: [],
-      languages: [],
-      personalityTraits: '',
-      ideals: '',
-      bonds: '',
-      flaws: '',
-    }) as CharacterSheet;
   },
   {} as CharacterSheet,
 );
@@ -95,7 +63,7 @@ export const currentCharacter = derived(
 export function saveCurrent(patch: Partial<CharacterSheet>) {
   const name = get(currentName);
   if (!name) {
-    console.error('No currentName set!');
+    console.error('No character selected!');
     return;
   }
 
@@ -106,12 +74,32 @@ export function saveCurrent(patch: Partial<CharacterSheet>) {
       return chars;
     }
 
+    if (patch.characterName && patch.characterName !== name) {
+      currentName.set(patch.characterName);
+    }
+
     const existing = chars[index];
 
     const updated: CharacterSheet = { ...existing, ...patch };
 
-    const newChars = [...chards];
+    const newChars = [...chars];
     newChars[index] = updated;
     return newChars;
   });
+}
+
+export function createNewCharacter() {
+  const placeholder = `new_character_${Date.now()}`;
+
+  const fresh = { ...blankCharacter, characterName: placeholder };
+
+  characters.update((arr) => [...arr, fresh]);
+
+  currentName.set(placeholder);
+
+  goto('/character-creator');
+}
+
+export function saveCharacters() {
+  characters.saveToLocalStorage();
 }

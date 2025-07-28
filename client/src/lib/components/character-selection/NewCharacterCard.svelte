@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { newCharacter } from '$lib/utils';
+  import { createNewCharacter } from '$lib/stores/characters';
   export let href: string = '/character-creator/';
 </script>
 
@@ -9,7 +9,7 @@
   aria-label="Create a new character"
   onclick={(event) => {
     event.preventDefault();
-    newCharacter();
+    createNewCharacter();
   }}
 >
   <div class="flex items-center justify-center">

@@ -12,6 +12,7 @@
     VALID_CLASSES,
     VALID_RACES,
   } from '@types';
+  import { currentCharacter, saveCurrent } from '$lib/stores/characters';
 
   let charName = $state('');
   let selectedClass: ClassesType | '' = $state('');
@@ -20,6 +21,52 @@
   let selectedAlignment: Alignments2024Type | '' = $state('');
   let playerName = $state('');
   let exp = $state(0);
+
+  $effect(() => {
+    charName = $currentCharacter.characterName || '';
+    selectedClass = $currentCharacter.class || '';
+    selectedBackground = $currentCharacter.background || '';
+    selectedRace = $currentCharacter.race || '';
+    selectedAlignment = $currentCharacter.alignment || '';
+    playerName = $currentCharacter.playerName || '';
+    exp = $currentCharacter.experiencePoints || 0;
+  });
+
+  $effect(() => {
+    if (
+      selectedClass &&
+      selectedClass !== $currentCharacter.class
+    ) {
+      saveCurrent({ class: selectedClass });
+    }
+  });
+
+  $effect(() => {
+    if (
+      selectedBackground &&
+      selectedBackground !== $currentCharacter.background
+    ) {
+      saveCurrent({ background: selectedBackground });
+    }
+  });
+
+  $effect(() => {
+    if (
+      selectedRace &&
+      selectedRace !== $currentCharacter.race
+    ) {
+      saveCurrent({ race: selectedRace });
+    }
+  });
+
+  $effect(() => {
+    if (
+      selectedAlignment &&
+      selectedAlignment !== $currentCharacter.alignment
+    ) {
+      saveCurrent({ alingment: selectedAlignment });
+    }
+  });
 </script>
 
 <!-- MOBILE -->
@@ -158,6 +205,7 @@
         id="char-name"
         class="bg-transparent border-0 w-full h-full text-4xl"
         bind:value={charName}
+        oninput={() => saveCurrent({ characterName: charName })}
       />
     </foreignObject>
     <foreignObject x="80" y="135" width="160" height="160">
@@ -199,6 +247,9 @@
         id=""
         placeholder="Type your name"
         bind:value={playerName}
+        onchange={() => {
+          saveCurrent({ playerName: playerName });
+        }}
       />
     </foreignObject>
     <line

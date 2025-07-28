@@ -38,7 +38,7 @@
   {#each skills as skill}
     <div class="flex gap-x-1 items-center p-1 text-sm">
       <input
-        class="rounded-full size-3 bg-transparent"
+        class="rounded-full size-3 bg-transparent checked:bg-white"
         type="checkbox"
         name={skill.code}
         id={skill.code}

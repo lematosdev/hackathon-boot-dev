@@ -8,7 +8,7 @@
     getPerception,
     getProficiencyBonus,
   } from '$lib/utils';
-  import { currentCharacter } from '$lib/stores/characters';
+  import { currentCharacter, saveCurrent } from '$lib/stores/characters';
   import {
     abilityScores,
     battleSkills,
@@ -16,6 +16,7 @@
     proficiencies,
     wisdomModifier,
   } from '$lib/stores/character-computed';
+  import type { CharacterSheet } from '../../../../types/characterSheet';
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
@@ -47,15 +48,39 @@
     { label: 'Experience Points', code: 'experience-points', value: '' },
   ];
 
-  const hidDice = $currentCharacter.hitDice.die;
-
   const level = $currentCharacter.level;
 
-  let skillsWithProficiencies: string[] = $state([]);
+  let hitDice = $state($currentCharacter.hitDice.die || 6);
+  let hitPointMax = $state($currentCharacter.hitPoints.maximum || 0);
+  let currentHitPoints = $state($currentCharacter.hitPoints.current || 0);
+  let temporaryHitPoints = $state(
+    $currentCharacter.hitPoints.temporary || 0,
+  );
 
-  let hitPointMax = $state(0);
-  let currentHitPoints = $state(0);
-  let temporaryHitPoints = $state(0);
+  let characterBackground: {
+    personalityTraits: string;
+    ideals: string;
+    bonds: string;
+    flaws: string;
+  } = $state({ personalityTraits: '', ideals: '', bonds: '', flaws: '' });
+
+  let skillProfs: string[] = $state([]);
+  let saveThrowProfs: string[] = $state([]);
+
+  $effect(() => {
+    skillProfs = $currentCharacter.skills
+      .filter((s: CharacterSheet['skills'][number]) => s.proficiency)
+      .map((s: CharacterSheet['skills'][number]) =>
+        s.name.toLowerCase().replace(/\s+/g, '-')
+      );
+    saveThrowProfs = $currentCharacter.savingThrows
+      .filter((st: CharacterSheet['savingThrows'][number]) =>
+        st.proficiency
+      )
+      .map((st: CharacterSheet['savingThrows'][number]) =>
+        st.abilityScore.substring(0, 3).toLowerCase()
+      );
+  });
 
   const weapons = [
     {
@@ -84,12 +109,17 @@
 
   const traits = $currentCharacter.featuresAndTraits;
 
-  const characterBackground = {
-    personalityTraits: $currentCharacter.personalityTraits,
-    ideals: $currentCharacter.ideals,
-    bonds: $currentCharacter.bonds,
-    flaws: $currentCharacter.flaws,
-  };
+  type BGKey = keyof typeof characterBackground;
+  const bgKeys: BGKey[] = ['personalityTraits', 'ideals', 'bonds', 'flaws'];
+
+  $effect(() => {
+    characterBackground = {
+      personalityTraits: $currentCharacter.personalityTraits,
+      ideals: $currentCharacter.ideals,
+      bonds: $currentCharacter.bonds,
+      flaws: $currentCharacter.flaws,
+    };
+  });
 </script>
 
 <div class="flex justify-center character-form">
@@ -117,13 +147,13 @@
           </div>
           <Skills
             {level}
-            list={skillsWithProficiencies}
+            list={saveThrowProfs}
             skills={$abilityScores}
             title="Saving Throws"
           />
           <Skills
             {level}
-            list={skillsWithProficiencies}
+            list={skillProfs}
             skills={skills.map((s) => ({
               ...s,
               value:
@@ -176,6 +206,13 @@
               id="hitPointMax"
               name="hitPointMax"
               bind:value={hitPointMax}
+              oninput={() =>
+                saveCurrent({
+                  hitPoints: {
+                    ...$currentCharacter.hitPoints,
+                    maximum: hitPointMax,
+                  },
+                })}
             />
           </div>
           <div>
@@ -183,6 +220,13 @@
               class="border-0 text-center text-3xl w-full"
               type="number"
               bind:value={currentHitPoints}
+              oninput={() =>
+                saveCurrent({
+                  hitPoints: {
+                    ...$currentCharacter.hitPoints,
+                    current: currentHitPoints,
+                  },
+                })}
             />
           </div>
           <p class="uppercase text-center text-xs">Current hit points</p>
@@ -194,6 +238,13 @@
               type="number"
               min="0"
               bind:value={temporaryHitPoints}
+              oninput={() =>
+                saveCurrent({
+                  hitPoints: {
+                    ...$currentCharacter.hitPoints,
+                    temporary: temporaryHitPoints,
+                  },
+                })}
             />
           </div>
           <p class="uppercase text-center text-xs">Temporary hit points</p>
@@ -203,7 +254,7 @@
             <div class="flex">
               <p>Total</p>
               <p class="border-0 border-b h-6 w-full text-center">
-                {`${level}d${hidDice}`}
+                {`${level}d${hitDice}`}
               </p>
             </div>
             <div>
@@ -250,7 +301,7 @@
       <div
         class="border rounded p-2 flex flex-col justify-center gap-y-2 h-114"
       >
-        {#each Object.keys(characterBackground) as bg}
+        {#each bgKeys as bg}
           <div
             class="border p-3 pb-1 first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
           >
@@ -261,6 +312,7 @@
               bind:value={characterBackground[
                 bg as keyof typeof characterBackground
               ]}
+              onblur={() => saveCurrent({ [bg]: characterBackground[bg] })}
             ></textarea>
             <p class="uppercase text-[0.6rem] text-center pt-2">
               {camelCaseToNormalText(bg)}

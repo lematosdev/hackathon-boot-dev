@@ -46,16 +46,16 @@ export const wisdomModifier = derived(
 );
 
 export const battleSkills = derived(
-  abilityScores,
-  (scores) => {
+  [currentCharacter, abilityScores],
+  ([c, scores]) => {
     const list = Array.isArray(scores) ? scores : [];
     const init = getAbilityModifier(
       list.find((a) => a.code === 'dex')?.value || 0,
     );
     return [
-      { label: 'Armor class', value: 17 },
+      { label: 'Armor class', value: c.armorClass || 0 },
       { label: 'Initiative', value: init },
-      { label: 'Speed', value: 30, unit: 'feet' },
+      { label: 'Speed', value: c.speed, unit: 'feet' },
     ];
   },
 );
