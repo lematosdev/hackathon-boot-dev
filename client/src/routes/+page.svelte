@@ -8,7 +8,7 @@
     thorgarIronfist,
   } from '$lib/utils/testcharacters';
   import { saveTestCharacters } from '$lib/utils';
-  import { characterList } from '$lib/stores/characters'
+  import { characterList } from '$lib/stores/characters';
 
   // Example data
   const testCharacters: CharacterSheet[] = [

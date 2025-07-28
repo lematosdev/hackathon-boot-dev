@@ -10,24 +10,46 @@
     getProficiencyBonus,
   } from '$lib/utils';
   import type { CharacterSheet } from '../../../../types/characterSheet';
-  import { currentName, currentCharacter } from '$lib/stores/characters';
-  import { derived } from 'svelte/store';
+  import { currentCharacter, currentName } from '$lib/stores/characters';
 
   console.log('DEBUG currentName →', $currentName);
   console.log('DEBUG currentCharacter →', $currentCharacter);
 
   let character: CharacterSheet = $currentCharacter as CharacterSheet;
 
-  console.log(character)
+  let abilityScores: { label: string; code: string; value: number }[] =
+    $state([]);
 
-  let abilityScores = $derived([
-    { label: 'Strength', code: 'str', value: character.attributes.strength     },
-    { label: 'Dexterity', code: 'dex', value: character.attributes.dexterity    },
-    { label: 'Constitution', code: 'cons', value: character.attributes.constitution  },
-    { label: 'Intelligence', code: 'int', value: character.attributes.intelligence },
-    { label: 'Wisdom', code: 'wis', value: character.attributes.wisdom       },
-    { label: 'Charisma', code: 'char', value: character.attributes.charisma     }
-  ]);
+  $effect(() => {
+    abilityScores = [
+      {
+        label: 'Strength',
+        code: 'str',
+        value: character.attributes.strength,
+      },
+      {
+        label: 'Dexterity',
+        code: 'dex',
+        value: character.attributes.dexterity,
+      },
+      {
+        label: 'Constitution',
+        code: 'cons',
+        value: character.attributes.constitution,
+      },
+      {
+        label: 'Intelligence',
+        code: 'int',
+        value: character.attributes.intelligence,
+      },
+      { label: 'Wisdom', code: 'wis', value: character.attributes.wisdom },
+      {
+        label: 'Charisma',
+        code: 'char',
+        value: character.attributes.charisma,
+      },
+    ];
+  });
 
   const skills = [
     { label: 'Acrobatics', ability: 'dex', code: 'acrobatics' },
@@ -50,9 +72,18 @@
     { label: 'Survival', ability: 'wis', code: 'survival' },
   ];
 
-  const wisdomModifier = getAbilityModifier(
-    abilityScores.find((a) => a.code === 'wis')?.value ?? 0,
-  );
+  let wisdomModifier = $state(0);
+  let initiative = $state(0);
+  let level = $state(character.level);
+
+  $effect(() => {
+    wisdomModifier = getAbilityModifier(
+      abilityScores.find((a) => a.code === 'wis')?.value ?? 0,
+    );
+    initiative = getAbilityModifier(
+      abilityScores.find((a) => a.code === 'dex')?.value || 0,
+    );
+  });
 
   const mainInputs = [
     { label: 'Class & Level', code: 'class-level', value: '' },
@@ -63,14 +94,10 @@
     { label: 'Experience Points', code: 'experience-points', value: '' },
   ];
 
-  const level = 3;
-  const hidDice = 8;
+  const hidDice = character.hitDice.die;
 
   let skillsWithProficiencies: string[] = $state([]);
 
-  const initiative = getAbilityModifier(
-    abilityScores.find((a) => a.code === 'dex')?.value || 0,
-  );
   const battleSkills = [
     { label: 'Armor class', value: 17 },
     { label: 'Initiative', value: initiative },
@@ -82,14 +109,10 @@
   let temporaryHitPoints = $state(0);
 
   let characterBackground = $state({
-    personalityTraits:
-      "My flattery makes those I talk to feel wonderful and important. Also, I don't like to get dirty, and I won't be caught dead in unsuitable accommodations.",
-    ideals:
-      "Responsibility. It's the duty of a noble to protect the common people, not bully them.",
-    bonds:
-      "My greataxe is a family heirloom, and it's by far my most precious possession",
-    flaws:
-      'I have a hard time resisting the allure of wealth, especially gold. Wealth can help me restore my legacy.',
+    personalityTraits: character.personalityTraits,
+    ideals: character.ideals,
+    bonds: character.bonds,
+    flaws: character.flaws,
   });
 
   const weapons = [
@@ -116,27 +139,12 @@
     gp: 40,
     pp: 0,
   });
-  const traits = [
-    {
-      name: 'Second Wind',
-      description:
-        'You have a limited well of stamina you can draw on to protect yourself from harm. You can use a bonus action to regain hit points equal to 1d10 + your fighter level.',
-    },
-    {
-      name: 'Fighting Style (Defense)',
-      description:
-        'While you are wearing armor, you gain a +1 bonus to ac. This bonus is already included in your ac.',
-    },
-  ];
 
-  const proficiencies = [
-    'all armor',
-    'shields',
-    'simple weapons',
-    'martial weapons',
-  ];
-
-  const languages = ['common', 'dwarvish', 'draconic', 'demonic'];
+  const traits = $state(character.featuresAndTraits);
+  const proficiencies = $state(
+    character.proficiencies.map((prof) => prof.name),
+  );
+  const languages = $state(character.languages.map((lang) => lang.name));
 </script>
 
 <div class="flex justify-center character-form">

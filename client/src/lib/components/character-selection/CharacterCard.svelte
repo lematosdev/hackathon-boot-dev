@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { loadCharacter } from '$lib/utils'
+  import { loadCharacter } from '$lib/utils';
   interface Props {
     charName: string;
     charClass: string;
@@ -15,7 +15,6 @@
     imageUrl = '',
     href = '/character-creator',
   }: Props = $props();
-
 </script>
 
 <a
